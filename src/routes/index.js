@@ -24,10 +24,10 @@ export default function Router() {
   return useRoutes([
    
     {
-      path: '/',
+      path: '',
       element: <MainLayout />,
       children: [
-        { element: <Home/>, index: true },
+        { path: '/', element: <Home/>},
       ],
     },
     

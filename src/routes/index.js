@@ -28,6 +28,8 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { path: '/', element: <Home/>},
+        { path: '/login', element: <Login/>},
+        { path: '/register', element: <Register/>},
       ],
     },
     
@@ -53,5 +55,7 @@ export default function Router() {
 
 // Dashboard
 const Home = Loadable(lazy(() => import('../pages/Home')));
+const Login = Loadable(lazy(() => import('../pages/auth/Login')));
+const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const PageOne = Loadable(lazy(() => import('../pages/PageOne')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

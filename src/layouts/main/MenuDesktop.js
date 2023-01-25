@@ -143,8 +143,8 @@ function MenuDesktopItem({ item, isHome, isOpen, isOffset}) {
             display: 'flex',
             cursor: 'pointer',
             alignItems: 'center',
-            ...(isHome && { color: 'text.secondary' }),
-            ...(isOffset && { color: 'text.primary' }),
+            color: 'text.primary',
+          
             ...(isOpen && { opacity: 0.48 }),
           }}
         >

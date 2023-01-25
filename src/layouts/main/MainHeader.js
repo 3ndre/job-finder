@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
 import { Box, Button, AppBar, Toolbar, Container } from '@mui/material';
@@ -81,7 +81,7 @@ export default function MainHeader() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <Button startIcon={<Iconify icon={'tabler:login'} width={22} height={22} />}>Login</Button>
+          <Button component={RouterLink} to="/login" startIcon={<Iconify icon={'tabler:login'} width={22} height={22} />}>Login</Button>
 
 
         </Container>

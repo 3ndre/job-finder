@@ -1,0 +1,24 @@
+@media (min-width: 1024px) { 
+  .img1 {
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    margin-top: 8rem; 
+    margin-right: 6rem; 
+  }
+   }
+
+
+
+   @media (min-width: 1024px) { 
+
+    .img2 {
+      position: absolute; 
+      bottom: 0; 
+      left: 0; 
+      margin-bottom: 8rem; 
+      margin-left: 6rem; 
+    }
+  }
+
+

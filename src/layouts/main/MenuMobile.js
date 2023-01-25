@@ -1,26 +1,15 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
-import { NavLink as RouterLink, useLocation } from 'react-router-dom';
+import { NavLink as RouterLink } from 'react-router-dom';
 // @mui
-import { alpha, styled } from '@mui/material/styles';
-import { Box, List, Drawer, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
-// config
-import { NAVBAR } from '../../config';
+import { alpha } from '@mui/material/styles';
+import { Paper } from '@mui/material';
 // components
-import Logo from '../../components/Logo';
 import Iconify from '../../components/Iconify';
-import Scrollbar from '../../components/Scrollbar';
-import { IconButtonAnimate } from '../../components/animate';
-import { NavSectionVertical } from '../../components/nav-section';
 
-// ----------------------------------------------------------------------
+//bottom nvigation
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 
-const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
-  ...theme.typography.body2,
-  height: NAVBAR.DASHBOARD_ITEM_ROOT_HEIGHT,
-  textTransform: 'capitalize',
-  color: theme.palette.text.secondary,
-}));
 
 // ----------------------------------------------------------------------
 
@@ -30,121 +19,65 @@ MenuMobile.propTypes = {
   navConfig: PropTypes.array,
 };
 
-export default function MenuMobile({ isOffset, isHome, navConfig }) {
-  const { pathname } = useLocation();
+const ICON_SIZE = {
+  width: 22,
+  height: 22,
+};
 
-  const [open, setOpen] = useState(false);
+//Navigation data
+const navConfig = [
+  {
+    id: 1,
+    title: 'Home',
+    icon: <Iconify icon={'material-symbols:home-outline-rounded'} {...ICON_SIZE} />,
+    path: '/'
+  },
+  {
+    id: 2,
+    title: 'Hire Staff',
+    icon: <Iconify icon={'fluent-mdl2:recruitment-management'} {...ICON_SIZE} />,
+    path: '/recents'
+  },
+  {
+    id: 3,
+    title: 'Top Staff',
+    icon: <Iconify icon={'icon-park-outline:file-staff'} {...ICON_SIZE} />,
+    path: '/recents'
+  },
+  {
+    id: 4,
+    title: 'Student',
+    icon: <Iconify icon={'mdi:account-student-outline'} {...ICON_SIZE} />,
+    path: '/recents'
+  },
+];
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  useEffect(() => {
-    if (drawerOpen) {
-      handleDrawerClose();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
-
-  const handleOpen = () => {
-    setOpen(!open);
-  };
-
-  const handleDrawerOpen = () => {
-    setDrawerOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
+export default function MenuMobile() {
 
   return (
     <>
-      <IconButtonAnimate
-        onClick={handleDrawerOpen}
-        sx={{
-          ml: 1,
-          ...(isHome && { color: 'text.secondary' }),
-          ...(isOffset && { color: 'text.primary' }),
-        }}
-      >
-        <Iconify icon={'eva:menu-2-fill'} />
-      </IconButtonAnimate>
-
-      <Drawer
-        open={drawerOpen}
-        onClose={handleDrawerClose}
-        ModalProps={{ keepMounted: true }}
-        PaperProps={{ sx: { pb: 5, width: 260 } }}
-      >
-        <Scrollbar>
-          <Logo sx={{ mx: 2.5, my: 3 }} />
-
-          <List disablePadding>
-            {navConfig.map((link) => (
-              <MenuMobileItem key={link.title} item={link} isOpen={open} onOpen={handleOpen} />
-            ))}
-          </List>
-        </Scrollbar>
-      </Drawer>
-    </>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-MenuMobileItem.propTypes = {
-  isOpen: PropTypes.bool,
-  item: PropTypes.shape({
-    children: PropTypes.array,
-    icon: PropTypes.any,
-    path: PropTypes.string,
-    title: PropTypes.string,
-  }),
-  onOpen: PropTypes.func,
-};
-
-function MenuMobileItem({ item, isOpen, onOpen }) {
-  const { title, path, icon, children } = item;
-
-  if (children) {
-    return (
-      <>
-        <ListItemStyle onClick={onOpen}>
-          <ListItemIcon>{icon}</ListItemIcon>
-          <ListItemText disableTypography primary={title} />
-          <Iconify
-            icon={isOpen ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-forward-fill'}
-            sx={{ width: 16, height: 16, ml: 1 }}
+    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, }} elevation={4} style={{ zIndex: 1251 }}>
+      <BottomNavigation showLabels>
+      {navConfig.map((item) => (
+       <BottomNavigationAction
+              sx={{
+                '&.active': {
+                  color: 'primary.main',
+                  fontWeight: 'fontWeightMedium',
+                  bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+                },
+              }}
+              key={item.id}
+              to={item.path}
+              end={item.path === '/'}
+              component={RouterLink}
+              label={item.title}
+              icon={item.icon}
           />
-        </ListItemStyle>
-
-        <Collapse in={isOpen} timeout="auto" unmountOnExit>
-          <Box sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
-            <NavSectionVertical
-              navConfig={children}
-            />
-          </Box>
-        </Collapse>
-      </>
-    );
-  }
-
- 
-
-  return (
-    <ListItemStyle
-      to={path}
-      component={RouterLink}
-      end={path === '/'}
-      sx={{
-        '&.active': {
-          color: 'primary.main',
-          fontWeight: 'fontWeightMedium',
-          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-        },
-      }}
-    >
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText disableTypography primary={title} />
-    </ListItemStyle>
+        ))}
+      </BottomNavigation>
+    </Paper>
+    </>
   );
 }

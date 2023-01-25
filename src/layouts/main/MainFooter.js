@@ -8,6 +8,7 @@ import Logo from '../../components/Logo';
 import LogoFooter from '../../components/LogoFooter';
 import SocialsButton from '../../components/SocialsButton';
 import useResponsive from '../../hooks/useResponsive';
+import MenuMobile from './MenuMobile';
 
 // ----------------------------------------------------------------------
 
@@ -34,13 +35,14 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function MainFooter() {
+export default function MainFooter({isOffset, isHome, navConfig}) {
 
   let currentYear = new Date().getFullYear();
   const isDesktop = useResponsive('up', 'lg');
 
   return (
     <RootStyle>
+      {!isDesktop && <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />}
       <Divider />
       <Container sx={{ pt: 5 }}>
         <Grid

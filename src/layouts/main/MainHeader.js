@@ -14,7 +14,6 @@ import Logo from '../../components/Logo';
 import Iconify from '../../components/Iconify';
 //
 import MenuDesktop from './MenuDesktop';
-import MenuMobile from './MenuMobile';
 import navConfig from './MenuConfig';
 
 // ----------------------------------------------------------------------
@@ -82,10 +81,9 @@ export default function MainHeader() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {isDesktop && <Button startIcon={<Iconify icon={'tabler:login'} width={22} height={22} />}>Login</Button>}
+          <Button startIcon={<Iconify icon={'tabler:login'} width={22} height={22} />}>Login</Button>
 
 
-          {!isDesktop && <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />}
         </Container>
       </ToolbarStyle>
 

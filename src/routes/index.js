@@ -30,6 +30,7 @@ export default function Router() {
         { path: '/', element: <Home/>},
         { path: '/login', element: <Login/>},
         { path: '/register', element: <Register/>},
+        { path: '/location', element: <Location/>},
       ],
     },
     
@@ -55,6 +56,7 @@ export default function Router() {
 
 // Dashboard
 const Home = Loadable(lazy(() => import('../pages/Home')));
+const Location = Loadable(lazy(() => import('../pages/Location')));
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const PageOne = Loadable(lazy(() => import('../pages/PageOne')));

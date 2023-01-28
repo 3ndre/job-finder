@@ -23,7 +23,7 @@ const LINKS = [
   {
     headline: 'Contact',
     children: [
-      { name: 'embogo.com@gmail.com', href: '#' },
+      { name: 'job-finder@gmail.com', href: '#' },
     ],
   },
 ];

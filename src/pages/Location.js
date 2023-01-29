@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";  
+import React, { useRef } from "react";  
 import Page from '../components/Page';
 //--------Location component--------------------
 import useGeoLocation from './location/useGeoLocation';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import L from "leaflet";
 import 'leaflet/dist/leaflet.css';
 import './location/location.css';

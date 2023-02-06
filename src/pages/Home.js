@@ -1,4 +1,4 @@
-
+import { Navigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 // components
@@ -24,6 +24,10 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 
 export default function Home() {
+
+  if (localStorage.getItem('access_token') !== null) {
+    return <Navigate to="/dashboard" />;
+  }
  
 
   return (

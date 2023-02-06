@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Link, Typography, Avatar } from '@mui/material';
-
+import { useSelector } from 'react-redux';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -23,6 +23,10 @@ NavbarAccount.propTypes = {
 };
 
 export default function NavbarAccount({ isCollapse }) {
+
+  const { user, loading } = useSelector((state) => ({...state.api}));
+
+
   return (
     <Link underline="none" color="inherit">
       <RootStyle
@@ -32,7 +36,7 @@ export default function NavbarAccount({ isCollapse }) {
           }),
         }}
       >
-        <Avatar src="https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg" alt="Rayan Moran" />
+        <Avatar src="/assets/avatar.png" alt="Avatar" />
 
         <Box
           sx={{
@@ -47,8 +51,11 @@ export default function NavbarAccount({ isCollapse }) {
             }),
           }}
         >
-          <Typography variant="subtitle2" noWrap>
-            Rayan Moran
+          <Typography variant="subtitle2" style={{textTransform: 'capitalize'}} noWrap>
+            {loading === false ?
+              <>{user.length > 0 ? <>{user[0].email.split('.')[0]}</> : null}</>
+              :
+              <>Loading...</>}
           </Typography>
           <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
             user

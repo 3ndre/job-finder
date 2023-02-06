@@ -39,7 +39,7 @@ export default function Router() {
       path: '',
       element: <DashboardLayout />,
       children: [
-        { path: 'dashboard', element: <PageOne /> },
+        { path: 'dashboard', element: <Dashboard /> },
       ],
     },
     {
@@ -61,5 +61,5 @@ const Location = Loadable(lazy(() => import('../pages/Location')));
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const Activate = Loadable(lazy(() => import('../pages/auth/Activate')));
-const PageOne = Loadable(lazy(() => import('../pages/PageOne')));
+const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

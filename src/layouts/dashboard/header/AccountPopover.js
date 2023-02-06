@@ -1,32 +1,39 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar } from '@mui/material';
 // components
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
-
+import { useSelector } from 'react-redux';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
+
   {
     label: 'Profile',
-    linkTo: '/',
+    linkTo: '/dashboard',
   },
   {
     label: 'Settings',
-    linkTo: '/',
+    linkTo: '/dashboard',
   },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+
+  const navigate = useNavigate();
   const [open, setOpen] = useState(null);
+
+  const { user, loading } = useSelector((state) => ({...state.api}));
+
+  function disconnected () {
+    localStorage.clear();
+    navigate('/login');
+  }
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -55,7 +62,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src="https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg" alt="Rayan Moran" />
+        <Avatar src="/assets/avatar.png" alt="Avatar" />
       </IconButtonAnimate>
 
       <MenuPopover
@@ -74,10 +81,16 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            Rayan Moran
+            {loading === false ?
+            <>{user.length > 0 ? <>{user[0].email}</> : null}</>
+            :
+            <>Loading...</>}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            rayan.moran@gmail.com
+            {loading === false ?
+              <>{user.length > 0 ? <>{user[0].email}</> : null}</>
+              :
+              <>Loading...</>}
           </Typography>
         </Box>
 
@@ -93,7 +106,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem sx={{ m: 1 }}>Logout</MenuItem>
+        <MenuItem sx={{ m: 1 }} onClick={disconnected}>Logout</MenuItem>
       </MenuPopover>
     </>
   );

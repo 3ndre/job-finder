@@ -1,6 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 
+//localstorage get access token
+const local_access_token = localStorage.getItem('access_token');
+const access_token = JSON.parse(local_access_token);
+//----------------------------------------------------------------------
+
+
+//Get request to get user info
+export const getUser = createAsyncThunk("api/getUser", async () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/auth/users/me/`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    }).then((res) => 
+    res.json()
+    );
+})
+
+
+
 //Post request to create users (Register user)
 export const createUser = createAsyncThunk("api/createUser", async ({createData}) => {
     return fetch(`${process.env.REACT_APP_API_URL}/auth/users/`, {
@@ -73,13 +95,26 @@ const apiSlice = createSlice({
         regResponse: null,
         actResponse: null,
         resendResponse: null,
-        data: [],
+        user: [],
         loading: false,
         error: null,
     },
 
 
     extraReducers: {
+
+         //get user info
+         [getUser.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.user = [action.payload];
+        },
+        [getUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
 
         //post user data (Register)
         [createUser.pending]: (state, action) => {

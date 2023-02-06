@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams, Link as RouterLink } from 'react-router-dom';
+import { useParams, Link as RouterLink, Navigate } from 'react-router-dom';
 
 // @mui
 import { styled } from '@mui/material/styles';
@@ -65,6 +65,12 @@ export default function Activate() {
   useEffect(() => {
     activateAccount();
   }, []);
+
+
+  if (localStorage.getItem('access_token') !== null) {
+    return <Navigate to="/dashboard" />;
+  }
+
 
   return (
     <Page title="Activate" sx={{ height: 1 }}>

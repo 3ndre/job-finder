@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Stack, Container, Typography, Card, CardContent } from '@mui/material';
@@ -45,6 +46,10 @@ const ContentStyle2 = styled('div')(({ theme }) => ({
 export default function Register() {
 
   const { regResponse, loading } = useSelector((state) => ({...state.api}));
+
+  if (localStorage.getItem('access_token') !== null) {
+    return <Navigate to="/dashboard" />;
+  }
 
   return (
     <Page title="Register">

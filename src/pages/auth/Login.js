@@ -1,5 +1,5 @@
 import React  from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, Navigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Stack, Link, Container, Typography, Card, CardContent } from '@mui/material';
@@ -39,7 +39,26 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function Login() {
 
-  const { loading } = useSelector((state) => ({...state.api}));
+  const navigate = useNavigate();
+  const { loading, logResponse } = useSelector((state) => ({...state.api}));
+
+  if(logResponse !== null && logResponse.status === 200) {
+     //local storage remove 24hrs
+     var now = new Date().getTime();
+     const item = {
+       token: logResponse.data.access,
+       expiry: now,
+     }
+
+     localStorage.setItem('access_token', JSON.stringify(item));
+     navigate('/dashboard')
+
+  }
+
+
+  if (localStorage.getItem('access_token') !== null) {
+    return <Navigate to="/dashboard" />;
+  }
 
 
   return (

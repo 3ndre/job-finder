@@ -30,6 +30,7 @@ export default function Router() {
         { path: '/', element: <Home/>},
         { path: '/login', element: <Login/>},
         { path: '/register', element: <Register/>},
+        { path: '/activate/:id/:token', element: <Activate/>},
         { path: '/location', element: <Location/>},
       ],
     },
@@ -59,5 +60,6 @@ const Home = Loadable(lazy(() => import('../pages/Home')));
 const Location = Loadable(lazy(() => import('../pages/Location')));
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
+const Activate = Loadable(lazy(() => import('../pages/auth/Activate')));
 const PageOne = Loadable(lazy(() => import('../pages/PageOne')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

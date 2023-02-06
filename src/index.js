@@ -14,6 +14,8 @@ import { SettingsProvider } from './contexts/SettingsContext';
 import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
 //
 import App from './App';
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -21,9 +23,11 @@ ReactDOM.render(
   <HelmetProvider>
     <SettingsProvider>
       <CollapseDrawerProvider>
+      <Provider store={store}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
+      </Provider>
       </CollapseDrawerProvider>
     </SettingsProvider>
   </HelmetProvider>,

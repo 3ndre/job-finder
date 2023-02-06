@@ -2,44 +2,65 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 
 //Post request to create users (Register user)
-export const createUser = createAsyncThunk("api/createUser", async ({userData}) => {
-    return fetch(`${process.env.REACT_APP_API_URL}/auth/users`, {
+export const createUser = createAsyncThunk("api/createUser", async ({createData}) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/auth/users/`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
             "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify({
-                email: userData.email,
-                password: userData.password,
-                status: userData.status,
-                phone: userData.phone,
-                address: userData.address,
-                is_organization: userData.is_organization,
-                is_staff: userData.is_staff,
-                is_active: userData.is_active,
-                "organization": {
-                    name: userData.organization.name,
-                    number_of_employees: userData.organization.number_of_employees,
-                    average_salary: userData.organization.average_salary,
-                    logo: userData.organization.logo,
-                    website: userData.organization.website
-                },
-                "detail": {
-                    first_name:  userData.detail.first_name,
-                    last_name: userData.detail.last_name,
-                    gender: userData.detail.gender,
-                    avatar: userData.detail.avatar,
-                    birth_date: userData.detail.birth_date,
-                    experience: userData.detail.experience,
-                    expected_salary_low: userData.detail.expected_salary_low,
-                    expected_salary_high: userData.detail.expected_salary_high,
-                    cv: userData.detail.cv,
-                    is_available: userData.detail.is_available
-                  }
-        })
+        body: JSON.stringify(createData)
     }).then((res) => 
-    res.json()
+    res.json().then((data) => ({
+        status: res.status,
+        data: data,
+    }))
+    );
+})
+
+
+//Post request to Login
+export const loginUser = createAsyncThunk("api/loginUser", async ({logData}) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/auth/jwt/create/`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(logData)
+    }).then((res) =>
+    res.json().then((data) => ({
+        status: res.status,
+        data: data,
+    }))
+    );
+})
+
+//post Activate Account
+export const activateUser = createAsyncThunk("api/activateUser", async ({activateData}) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/auth/users/activation/`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(activateData)
+    }).then((res) =>
+        res.status
+    );
+})
+
+//post Resend Activate Account
+export const resendActivateUser = createAsyncThunk("api/resendActivateUser", async ({resendData}) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/auth/users/resend_activation/`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(resendData)
+    }).then((res) =>
+        res.status
     );
 })
 
@@ -47,7 +68,12 @@ export const createUser = createAsyncThunk("api/createUser", async ({userData}) 
 const apiSlice = createSlice({
     name: "api",
     initialState: {
-        api: [],
+        api: null,
+        logResponse: null,
+        regResponse: null,
+        actResponse: null,
+        resendResponse: null,
+        data: [],
         loading: false,
         error: null,
     },
@@ -55,15 +81,58 @@ const apiSlice = createSlice({
 
     extraReducers: {
 
-        //post user data
+        //post user data (Register)
         [createUser.pending]: (state, action) => {
             state.loading = true;
+            state.regResponse = null;
         },
         [createUser.fulfilled]: (state, action) => {
             state.loading = false;
-            state.api = action.payload;
+            state.regResponse = action.payload;
         },
         [createUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        //post credentials (Login)
+        [loginUser.pending]: (state, action) => {
+            state.loading = true;
+            state.logResponse = null;
+        },
+        [loginUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.logResponse = action.payload;
+        },
+        [loginUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        //post Activate user
+        [activateUser.pending]: (state, action) => {
+            state.loading = true;
+            state.actResponse = null;
+        },
+        [activateUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.actResponse = action.payload;
+        },
+        [activateUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        //post Resend Activate user
+        [resendActivateUser.pending]: (state, action) => {
+            state.loading = true;
+            state.resendResponse = null;
+        },
+        [resendActivateUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.resendResponse = action.payload;
+        },
+        [resendActivateUser.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

@@ -7,6 +7,8 @@ const access_token = JSON.parse(local_access_token);
 //----------------------------------------------------------------------
 
 
+//---------------------------------------------------Get Request ---------------------------------------------------------------
+
 //Get request to get user info
 export const getUser = createAsyncThunk("api/getUser", async () => {
     return fetch(`${process.env.REACT_APP_API_URL}/auth/users/me/`, {
@@ -22,7 +24,87 @@ export const getUser = createAsyncThunk("api/getUser", async () => {
 })
 
 
+//Get list of posted job
 
+export const getJob = createAsyncThunk("api/getJob", async () => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    });
+    const data = await response.json();
+    return data;
+});
+
+
+//Get job by id
+
+export const getJobById = createAsyncThunk("api/getJobById", async ({id}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/${id}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    });
+    const data = await response.json();
+    return data;
+});
+
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+
+//-----------------------------------------------------Delete Request------------------------------------------------------------
+
+//Delete job by Id 
+export const deleteJob = createAsyncThunk("api/deleteJob", async ({id}) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/api/post/${id}/`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    }).then((res) =>  {
+        res.json();
+    }
+    );
+})
+
+
+//--------------------------------------------------------------------------------------------------------------------------------
+
+//------------------------------------------------------PUT (Update Request)------------------------------------------------------
+
+
+//Put request to update JOB
+
+export const updateJob = createAsyncThunk("api/updateJob", async ({updateJobData, id}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/${id}/`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+        body: JSON.stringify(updateJobData)
+    });
+    const data = await response.json();
+    return {
+        status: response.status,
+        data: data,
+    };
+});
+
+
+//--------------------------------------------------------------------------------------------------------------------------------
+
+//---------------------------------------------------Post Request ---------------------------------------------------------------
 //Post request to create users (Register user)
 export const createUser = createAsyncThunk("api/createUser", async ({createData}) => {
     return fetch(`${process.env.REACT_APP_API_URL}/auth/users/`, {
@@ -39,6 +121,26 @@ export const createUser = createAsyncThunk("api/createUser", async ({createData}
     }))
     );
 })
+
+
+//Post request to create JOB
+
+export const createJob = createAsyncThunk("api/createJob", async ({createJobData}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+        body: JSON.stringify(createJobData)
+    });
+    const data = await response.json();
+    return {
+        status: response.status,
+        data: data,
+    };
+});
 
 
 //Post request to Login
@@ -87,6 +189,8 @@ export const resendActivateUser = createAsyncThunk("api/resendActivateUser", asy
 })
 
 
+//------------------------------------------------------------------------------------------------------------------
+
 const apiSlice = createSlice({
     name: "api",
     initialState: {
@@ -94,8 +198,11 @@ const apiSlice = createSlice({
         logResponse: null,
         regResponse: null,
         actResponse: null,
+        jobResponse: null,
         resendResponse: null,
         user: [],
+        job: [],
+        jobById: [],
         loading: false,
         error: null,
     },
@@ -116,6 +223,48 @@ const apiSlice = createSlice({
             state.error = action.payload;
         },
 
+
+        //get job list
+        [getJob.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getJob.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.job = [action.payload];
+        },
+        [getJob.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+        //get job by ID 
+        [getJobById.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getJobById.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.jobById = [action.payload];
+        },
+        [getJobById.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+        //delete job post
+        [deleteJob.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [deleteJob.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.job = [action.payload];
+        },
+        [deleteJob.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
         //post user data (Register)
         [createUser.pending]: (state, action) => {
             state.loading = true;
@@ -126,6 +275,21 @@ const apiSlice = createSlice({
             state.regResponse = action.payload;
         },
         [createUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+        //post job data (Create Job)
+        [createJob.pending]: (state, action) => {
+            state.loading = true;
+            state.jobResponse = null;
+        },
+        [createJob.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.jobResponse = action.payload;
+        },
+        [createJob.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
@@ -168,6 +332,23 @@ const apiSlice = createSlice({
             state.resendResponse = action.payload;
         },
         [resendActivateUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+
+
+         //PUT job data (Update Job)
+         [updateJob.pending]: (state, action) => {
+            state.loading = true;
+            state.jobResponse = null;
+        },
+        [updateJob.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.jobResponse = action.payload;
+        },
+        [updateJob.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

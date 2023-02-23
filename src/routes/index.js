@@ -40,6 +40,9 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: 'dashboard', element: <Dashboard /> },
+        { path: 'job-board', element: <JobBoard /> },
+        { path: 'job-board/create', element: <JobBoardIndex /> },
+        { path: 'job-board/update/:id', element: <JobBoardIndexUpdate /> },
       ],
     },
     {
@@ -62,4 +65,7 @@ const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const Activate = Loadable(lazy(() => import('../pages/auth/Activate')));
 const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
+const JobBoard = Loadable(lazy(() => import('../pages/JobBoard')));
+const JobBoardIndex = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndex')));
+const JobBoardIndexUpdate = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndexUpdate')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

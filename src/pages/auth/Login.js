@@ -52,7 +52,7 @@ export default function Login() {
 
      localStorage.setItem('access_token', JSON.stringify(item));
      navigate('/dashboard')
-
+     window.location.reload();
   }
 
 

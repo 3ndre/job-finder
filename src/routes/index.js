@@ -41,8 +41,11 @@ export default function Router() {
       children: [
         { path: 'dashboard', element: <Dashboard /> },
         { path: 'job-board', element: <JobBoard /> },
+        { path: 'user-board', element: <UserBoard /> },
         { path: 'job-board/create', element: <JobBoardIndex /> },
+        { path: 'user-board/create', element: <UserBoardIndex /> },
         { path: 'job-board/update/:id', element: <JobBoardIndexUpdate /> },
+        { path: 'user-board/update/:id', element: <UserBoardIndexUpdate /> },
       ],
     },
     {
@@ -66,6 +69,9 @@ const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const Activate = Loadable(lazy(() => import('../pages/auth/Activate')));
 const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
 const JobBoard = Loadable(lazy(() => import('../pages/JobBoard')));
+const UserBoard = Loadable(lazy(() => import('../pages/UserBoard')));
 const JobBoardIndex = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndex')));
+const UserBoardIndex = Loadable(lazy(() => import('../pages/user/forms/UserBoardIndex')));
 const JobBoardIndexUpdate = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndexUpdate')));
+const UserBoardIndexUpdate = Loadable(lazy(() => import('../pages/user/forms/UserBoardIndexUpdate')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

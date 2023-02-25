@@ -57,6 +57,38 @@ export const getJobById = createAsyncThunk("api/getJobById", async ({id}) => {
 
 
 
+//Get list of created users
+
+export const getUserByOrg = createAsyncThunk("api/getUserByOrg", async () => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/organization`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    });
+    const data = await response.json();
+    return data;
+});
+
+
+
+//Get org user by id
+
+export const getOrgUserById = createAsyncThunk("api/getOrgUserById", async ({id}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/organization/${id}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    });
+    const data = await response.json();
+    return data;
+});
+
 //-------------------------------------------------------------------------------------------------------------------------------
 
 //-----------------------------------------------------Delete Request------------------------------------------------------------
@@ -64,6 +96,22 @@ export const getJobById = createAsyncThunk("api/getJobById", async ({id}) => {
 //Delete job by Id 
 export const deleteJob = createAsyncThunk("api/deleteJob", async ({id}) => {
     return fetch(`${process.env.REACT_APP_API_URL}/api/post/${id}/`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    }).then((res) =>  {
+        res.json();
+    }
+    );
+})
+
+
+//Delete user by Id 
+export const deleteUser = createAsyncThunk("api/deleteUser", async ({id}) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/api/users/organization/${id}/`, {
         method: "DELETE",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
@@ -93,6 +141,27 @@ export const updateJob = createAsyncThunk("api/updateJob", async ({updateJobData
             'Authorization': `Bearer ${access_token.token}`,
         },
         body: JSON.stringify(updateJobData)
+    });
+    const data = await response.json();
+    return {
+        status: response.status,
+        data: data,
+    };
+});
+
+
+
+//Put request to update custom user
+
+export const updateUserByOrg = createAsyncThunk("api/updateUserByOrg", async ({updateUserData, id}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/organization/${id}/`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+        body: JSON.stringify(updateUserData)
     });
     const data = await response.json();
     return {
@@ -142,6 +211,31 @@ export const createJob = createAsyncThunk("api/createJob", async ({createJobData
     };
 });
 
+
+
+//Post request to create User By organization
+
+export const createUserByOrg = createAsyncThunk("api/createUserByOrg", async ({createUserData}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/organization/`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+        body: JSON.stringify(createUserData)
+    });
+    const data = await response.json();
+    return {
+        status: response.status,
+        data: data,
+    };
+});
+
+
+
+
+//------------------------------------------------------------Authentication ------------------------------------------------
 
 //Post request to Login
 export const loginUser = createAsyncThunk("api/loginUser", async ({logData}) => {
@@ -199,10 +293,13 @@ const apiSlice = createSlice({
         regResponse: null,
         actResponse: null,
         jobResponse: null,
+        userResponse: null,
         resendResponse: null,
         user: [],
         job: [],
+        orgUser: [],
         jobById: [],
+        orgUserById: [],
         loading: false,
         error: null,
     },
@@ -252,6 +349,34 @@ const apiSlice = createSlice({
         },
 
 
+        //get user list
+        [getUserByOrg.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getUserByOrg.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.orgUser = [action.payload];
+        },
+        [getUserByOrg.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+        //get user by ID 
+        [getOrgUserById.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getOrgUserById.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.orgUserById = [action.payload];
+        },
+        [getOrgUserById.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
         //delete job post
         [deleteJob.pending]: (state, action) => {
             state.loading = true;
@@ -261,6 +386,20 @@ const apiSlice = createSlice({
             state.job = [action.payload];
         },
         [deleteJob.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+         //delete organization user 
+         [deleteUser.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [deleteUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.orgUser = [action.payload];
+        },
+        [deleteUser.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
@@ -293,6 +432,25 @@ const apiSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
+
+        //post user data by org (Create User)
+        [createUserByOrg.pending]: (state, action) => {
+            state.loading = true;
+            state.jobResponse = null;
+        },
+        [createUserByOrg.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.userResponse = action.payload;
+        },
+        [createUserByOrg.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+
+        //--------------------------------Authentication--------------------------
 
         //post credentials (Login)
         [loginUser.pending]: (state, action) => {
@@ -337,7 +495,7 @@ const apiSlice = createSlice({
         },
 
 
-
+        //--------------------------------------------------Updating Data---------------------------------
 
          //PUT job data (Update Job)
          [updateJob.pending]: (state, action) => {
@@ -349,6 +507,21 @@ const apiSlice = createSlice({
             state.jobResponse = action.payload;
         },
         [updateJob.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+         //PUT custom user data (Update Org user)
+         [updateUserByOrg.pending]: (state, action) => {
+            state.loading = true;
+            state.userResponse = null;
+        },
+        [updateUserByOrg.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.userResponse = action.payload;
+        },
+        [updateUserByOrg.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

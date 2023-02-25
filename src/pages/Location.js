@@ -1,4 +1,4 @@
-import React, { useRef } from "react";  
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import Page from '../components/Page';
 //--------Location component--------------------
 import useGeoLocation from './location/useGeoLocation';
@@ -53,30 +53,53 @@ const Location = () => {
     const mapRef = useRef();
     const location = useGeoLocation();
 
+    const markerRef = useRef(null);
+    const [position, setPosition] = useState({lat: 0, lng: 0}); 
+  
+
+    const handleMarkerDragEnd = useCallback(() => {
+      const marker = markerRef.current;
+      if (marker != null) {
+        const newPosition = marker.getLatLng();
+        setPosition({
+          lat: newPosition.lat,
+          lng: newPosition.lng,
+        });
+      } 
+    }, [location]);
+
+    useEffect(() => {
+      if (location.loaded && location.lat !== 'Geolocation not supported') {
+          setPosition({lat: location.lat, lng: location.lng});
+      }
+  }, [location]);
+
   return (
     <Page title="Login">
     <RootStyle>
       <Container maxWidth="sm">
         <ContentStyle>
-        {location.loaded && location.lat !== 'Geolocation not supported' ?
+        {location.loaded && location.loaded == true && position && location.lat !== 'Geolocation not supported' ?
         <> 
+      
         <MapContainer center={{ lat: location.lat, lng: location.lng }} zoom={13} ref={mapRef}>
         <TileLayer
                 url={mapAPI.maptiler.url}
                 attribution={mapAPI.maptiler.attribution}
               />
                 <Marker
-                  icon={markerIcon}
-                  position={[
-                    location.lat,
-                    location.lng,
-                  ]}
-                ></Marker>
-        </MapContainer>
-        <br></br>
-        <Typography>Latitude: {location.lat}</Typography>
-        <Typography>Longitude: {location.lng}</Typography>
-          </> : null}
+                    draggable={true}
+                    icon={markerIcon}
+                    position={{ lat: position.lat, lng: position.lng }}
+                    eventHandlers={{ dragend: handleMarkerDragEnd }}
+                    ref={markerRef}
+                  ></Marker>
+              </MapContainer>
+              <br></br>
+              <Typography>Latitude: {position.lat}</Typography>
+              <Typography>Longitude: {position.lng}</Typography>
+        </>
+       : null}
         </ContentStyle>
       </Container>
     </RootStyle>

@@ -32,7 +32,7 @@ export const getJob = createAsyncThunk("api/getJob", async () => {
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
             "Access-Control-Allow-Origin": "*",
-            'Authorization': `Bearer ${access_token.token}`,
+            // 'Authorization': `Bearer ${access_token.token}`,
         },
     });
     const data = await response.json();

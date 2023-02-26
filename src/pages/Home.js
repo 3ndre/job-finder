@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 // components
 import Page from '../components/Page';
 import HomeBanner from './home/HomeBanner';
+import AllJobs from './home/AllJobs';
 
 
 
@@ -35,6 +36,7 @@ export default function Home() {
      <RootStyle>   
       <ContentStyle>
         <HomeBanner/>
+        <AllJobs/>
       </ContentStyle>
       </RootStyle>
     </Page>

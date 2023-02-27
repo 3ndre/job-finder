@@ -7,6 +7,7 @@ import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 
+
 // ----------------------------------------------------------------------
 
 const Loadable = (Component) => (props) => {
@@ -28,6 +29,7 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { path: '/', element: <Home/>},
+        { path: '/job/:id', element: <JobDetails/>},
         { path: '/login', element: <Login/>},
         { path: '/register', element: <Register/>},
         { path: '/activate/:id/:token', element: <Activate/>},
@@ -63,6 +65,7 @@ export default function Router() {
 
 // Dashboard
 const Home = Loadable(lazy(() => import('../pages/Home')));
+const JobDetails = Loadable(lazy(() => import('../pages/JobDetails')));
 const Location = Loadable(lazy(() => import('../pages/Location')));
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));

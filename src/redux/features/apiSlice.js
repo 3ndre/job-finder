@@ -32,7 +32,6 @@ export const getJob = createAsyncThunk("api/getJob", async () => {
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
             "Access-Control-Allow-Origin": "*",
-            // 'Authorization': `Bearer ${access_token.token}`,
         },
     });
     const data = await response.json();
@@ -48,7 +47,6 @@ export const getJobById = createAsyncThunk("api/getJobById", async ({id}) => {
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
             "Access-Control-Allow-Origin": "*",
-            'Authorization': `Bearer ${access_token.token}`,
         },
     });
     const data = await response.json();

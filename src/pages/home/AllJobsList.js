@@ -74,7 +74,7 @@ function JobItem({jobData}) {
       </Typography>
       <Box sx={{  p: 2 }}>
       <Button
-          to="#"
+          to={`/job/${jobData.id}`}
           size="small"
           variant="outlined"
           component={RouterLink}

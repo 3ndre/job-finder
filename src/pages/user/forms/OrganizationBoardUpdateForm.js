@@ -55,7 +55,7 @@ const mapAPI = {
 
 
 
-export default function UserBoardUpdateForm({data, id}) {
+export default function OrganizationBoardUpdateForm({data, id}) {
 
 
      const dispatch = useDispatch(); 

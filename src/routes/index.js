@@ -2,10 +2,13 @@ import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
 import DashboardLayout from '../layouts/dashboard';
+import DashboardLayoutUser from '../layouts/dashboarduser';
 import MainLayout from '../layouts/main'
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // components
 import LoadingScreen from '../components/LoadingScreen';
+//Redux
+import { useSelector } from 'react-redux';
 
 
 // ----------------------------------------------------------------------
@@ -22,42 +25,56 @@ const Loadable = (Component) => (props) => {
 };
 
 export default function Router() {
+
+  const { user } = useSelector((state) => ({...state.api}));
+
+
   return useRoutes([
-   
     {
       path: '',
       element: <MainLayout />,
       children: [
         { path: '/', element: <Home/>},
         { path: '/job/:id', element: <JobDetails/>},
+        { path: '/search/:title', element: <JobSearch/>},
         { path: '/login', element: <Login/>},
         { path: '/register', element: <Register/>},
         { path: '/activate/:id/:token', element: <Activate/>},
         { path: '/location', element: <Location/>},
       ],
     },
-    
-    {
-      path: '',
-      element: <DashboardLayout />,
-      children: [
-        { path: 'dashboard', element: <Dashboard /> },
-        { path: 'job-board', element: <JobBoard /> },
-        { path: 'user-board', element: <UserBoard /> },
-        { path: 'job-board/create', element: <JobBoardIndex /> },
-        { path: 'user-board/create', element: <UserBoardIndex /> },
-        { path: 'job-board/update/:id', element: <JobBoardIndexUpdate /> },
-        { path: 'user-board/update/:id', element: <UserBoardIndexUpdate /> },
-      ],
-    },
-    {
-      path: '*',
+
+    { path: '*',
       element: <LogoOnlyLayout />,
       children: [
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" replace /> },
       ],
     },
+    
+    user && (user[0]?.is_organization || user[0]?.is_staff) ?
+    {
+      path: '',
+      element: <DashboardLayout />,
+      children: [
+        { path: 'dashboard', element: <Dashboard /> },
+        { path: 'job-board', element: <JobBoard /> },
+        { path: 'org-board', element: <OrganizationBoard /> },
+        { path: 'job-board/create', element: <JobBoardIndex /> },
+        { path: 'org-board/create', element: <OrganizationBoardIndex /> },
+        { path: 'job-board/update/:id', element: <JobBoardIndexUpdate /> },
+        { path: 'org-board/update/:id', element: <OrganizationBoardIndexUpdate /> },
+      ],
+    }
+    :
+    {
+      path: '',
+      element: <DashboardLayoutUser />,
+      children: [
+        { path: 'dashboard', element: <DashboardUser /> },
+      ],
+    },
+    
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
@@ -66,15 +83,17 @@ export default function Router() {
 // Dashboard
 const Home = Loadable(lazy(() => import('../pages/Home')));
 const JobDetails = Loadable(lazy(() => import('../pages/JobDetails')));
+const JobSearch = Loadable(lazy(() => import('../pages/JobSearch')));
 const Location = Loadable(lazy(() => import('../pages/Location')));
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const Activate = Loadable(lazy(() => import('../pages/auth/Activate')));
 const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
+const DashboardUser = Loadable(lazy(() => import('../pages/dashboarduser/DashboardUser')));
 const JobBoard = Loadable(lazy(() => import('../pages/JobBoard')));
-const UserBoard = Loadable(lazy(() => import('../pages/UserBoard')));
+const OrganizationBoard = Loadable(lazy(() => import('../pages/OrganizationBoard')));
 const JobBoardIndex = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndex')));
-const UserBoardIndex = Loadable(lazy(() => import('../pages/user/forms/UserBoardIndex')));
+const OrganizationBoardIndex = Loadable(lazy(() => import('../pages/user/forms/OrganizationBoardIndex')));
 const JobBoardIndexUpdate = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndexUpdate')));
-const UserBoardIndexUpdate = Loadable(lazy(() => import('../pages/user/forms/UserBoardIndexUpdate')));
+const OrganizationBoardIndexUpdate = Loadable(lazy(() => import('../pages/user/forms/OrganizationBoardIndexUpdate')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

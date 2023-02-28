@@ -27,7 +27,7 @@ import {
 
 
 
-const UserList = () => {
+const OrganizationList = () => {
 
 
   const dispatch = useDispatch();
@@ -71,8 +71,8 @@ const UserList = () => {
 
   const handleNavigate = (id) => {
 
-    navigate(`/user-board/update/${id}`)
-   window.location.reload();
+    navigate(`/org-board/update/${id}`)
+    window.location.reload();
 
 }
 
@@ -95,7 +95,7 @@ const UserList = () => {
                       
         <EmptyContent
         title="Empty!"
-        description={`You don't have any users yet.`}
+        description={`You don't have any organizations yet.`}
         sx={{
           '& span.MuiBox-root': { height: 160 },
         }}
@@ -189,4 +189,4 @@ const UserList = () => {
   )
 }
 
-export default UserList
+export default OrganizationList

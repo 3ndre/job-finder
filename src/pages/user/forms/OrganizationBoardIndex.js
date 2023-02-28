@@ -8,14 +8,14 @@ import useSettings from '../../../hooks/useSettings';
 // components 
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import UserBoardForm from './UserBoardForm';
+import OrganizationBoardForm from './OrganizationBoardForm';
 
 
 
 
 // ----------------------------------------------------------------------
 
-export default function UserBoardIndex() {
+export default function OrganizationBoardIndex() {
   const { themeStretch } = useSettings();
 
 
@@ -25,7 +25,7 @@ export default function UserBoardIndex() {
   }
 
   return (
-    <Page title="Create New User">
+    <Page title="Create New Organization">
       <Container maxWidth={themeStretch ? false : 'lg'}>
 
 
@@ -34,13 +34,13 @@ export default function UserBoardIndex() {
           heading="Create User"
           links={[
             { name: 'Dashboard', href: '/dashboard' },
-            { name: 'User Board', href: '/user-board'},
-            { name: 'Create User'},
+            { name: 'Organization Board', href: '/org-board'},
+            { name: 'Create Organization'},
           ]}
 
         />
 
-          <UserBoardForm />
+          <OrganizationBoardForm />
      
 
       </Container>

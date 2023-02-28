@@ -54,7 +54,7 @@ const markerIcon = new L.Icon({
 // ----------------------------------------------------------------------
 
 
-export default function UserBoardForm() {
+export default function OrganizationBoardForm() {
 
 
      const dispatch = useDispatch(); 

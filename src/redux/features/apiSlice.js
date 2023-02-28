@@ -39,6 +39,21 @@ export const getJob = createAsyncThunk("api/getJob", async () => {
 });
 
 
+//Get search of posted job
+
+export const getJobSearch = createAsyncThunk("api/getJobSearch", async ({title}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/?title=${title}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+        },
+    });
+    const data = await response.json();
+    return data;
+});
+
+
 //Get job by id
 
 export const getJobById = createAsyncThunk("api/getJobById", async ({id}) => {
@@ -55,7 +70,7 @@ export const getJobById = createAsyncThunk("api/getJobById", async ({id}) => {
 
 
 
-//Get list of created users
+//Get list of created organization
 
 export const getUserByOrg = createAsyncThunk("api/getUserByOrg", async () => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/organization`, {
@@ -107,7 +122,7 @@ export const deleteJob = createAsyncThunk("api/deleteJob", async ({id}) => {
 })
 
 
-//Delete user by Id 
+//Delete user by Id  for organization
 export const deleteUser = createAsyncThunk("api/deleteUser", async ({id}) => {
     return fetch(`${process.env.REACT_APP_API_URL}/api/users/organization/${id}/`, {
         method: "DELETE",
@@ -295,6 +310,7 @@ const apiSlice = createSlice({
         resendResponse: null,
         user: [],
         job: [],
+        jobSearch: [],
         orgUser: [],
         jobById: [],
         orgUserById: [],
@@ -328,6 +344,19 @@ const apiSlice = createSlice({
             state.job = [action.payload];
         },
         [getJob.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        //get job Search
+        [getJobSearch.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getJobSearch.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.jobSearch = [action.payload];
+        },
+        [getJobSearch.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

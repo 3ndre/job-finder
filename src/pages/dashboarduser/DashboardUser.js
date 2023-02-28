@@ -3,16 +3,16 @@ import { Navigate } from 'react-router-dom';
 // @mui
 import { Container, Typography } from '@mui/material';
 // hooks
-import useSettings from '../hooks/useSettings';
+import useSettings from '../../hooks/useSettings';
 // components
-import Page from '../components/Page';
+import Page from '../../components/Page';
 //redux
 import { useDispatch } from 'react-redux';
-import { getUser } from '../redux/features/apiSlice';
+import { getUser } from '../../redux/features/apiSlice';
 
 // ----------------------------------------------------------------------
 
-export default function DashboardOrg() {
+export default function DashboardUser() {
   const { themeStretch } = useSettings();
 
   const dispatch = useDispatch();
@@ -24,6 +24,8 @@ export default function DashboardOrg() {
   useEffect(() => {
     fetchUser();
 }, []);
+
+
 
   if (localStorage.getItem('access_token') === null) {
     return <Navigate to="/login" />;

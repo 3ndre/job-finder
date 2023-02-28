@@ -15,12 +15,12 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrgUserById } from '../../../redux/features/apiSlice';
 import SkeletonItem from "../../../components/SkeletonItem";
-import UserBoardUpdateForm from "./UserBoardUpdateForm";
+import OrganizationBoardUpdateForm from "./OrganizationBoardUpdateForm";
 
 
 // ----------------------------------------------------------------------
 
-export default function UserBoardIndexUpdate() {
+export default function OrganizationBoardIndexUpdate() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch(); 
 
@@ -67,7 +67,7 @@ export default function UserBoardIndexUpdate() {
 
           {orgUserById && orgUserById.length > 0 && orgUserById[0] ? 
           <>
-           <UserBoardUpdateForm data={orgUserById} id={id} />
+           <OrganizationBoardUpdateForm data={orgUserById} id={id} />
           </>
             :
           <SkeletonItem/>

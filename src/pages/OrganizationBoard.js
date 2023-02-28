@@ -11,12 +11,12 @@ import useSettings from '../hooks/useSettings';
 // components 
 import Page from '../components/Page';
 import HeaderBreadcrumbs from '../components/HeaderBreadcrumbs';
-import UserList from './user/UserList';
+import OrganizationList from './user/OrganizationList';
 // import EmptyContent from '../components/EmptyContent';
 
 // ----------------------------------------------------------------------
 
-export default function UserBoard() {
+export default function OrganizationBoard() {
   const { themeStretch } = useSettings();
 
 
@@ -27,23 +27,23 @@ export default function UserBoard() {
   }
 
   return (
-    <Page title="User Board">
+    <Page title="Organization Board">
       <Container maxWidth={themeStretch ? false : 'lg'}>
 
 
       <HeaderBreadcrumbs
-          heading="User List"
+          heading="Organization List"
           links={[
             { name: 'Dashboard', href: '/dashboard' },
-            { name: 'User List'},
+            { name: 'Organization List'},
           ]}
           action={
-            <Button component={RouterLink} variant="contained" startIcon={<Iconify icon="material-symbols:add"/>} to={'/user-board/create'}>User</Button>
+            <Button component={RouterLink} variant="contained" startIcon={<Iconify icon="material-symbols:add"/>} to={'/org-board/create'}>New</Button>
           }
         />
 
          
-        <UserList />
+        <OrganizationList />
 
       </Container>
     </Page> 

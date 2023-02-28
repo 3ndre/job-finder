@@ -8,7 +8,7 @@ import { getJobSearch } from '../../redux/features/apiSlice';
 
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box,  Container, Typography, Button, Tooltip, TextField, Collapse, Card, CardContent, CardActions, IconButton, InputAdornment} from '@mui/material';
+import { Box,  Container, Button, Tooltip, TextField, Collapse, Card, CardContent, CardActions, IconButton, InputAdornment} from '@mui/material';
 
 //form
 import InputLabel from '@mui/material/InputLabel';
@@ -20,7 +20,7 @@ import Select from '@mui/material/Select';
 // components
 import { MotionViewport, varFade } from '../../components/animate';
 import Iconify from '../../components/Iconify';
-import './home.css'
+import '../home/home.css'
 
 
 // ----------------------------------------------------------------------
@@ -46,16 +46,16 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 
 
-export default function HomeBanner() {
+export default function SearchBanner() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   //--------------states------------------------
   const [expanded, setExpanded] = useState(false);
   const [level, setLevel] = useState('');
   const [subject, setSubject] = useState('');
+  
 
   const [searchData, setSearchData] = useState({ title: ''});
 
@@ -77,7 +77,9 @@ export default function HomeBanner() {
     e.preventDefault();
     dispatch(getJobSearch(searchData.title));
     navigate(`/search/${searchData.title}`);
+    setSearchData({ title: ''});
 }
+
 
   return (
     <RootStyle>
@@ -104,18 +106,11 @@ export default function HomeBanner() {
             mt: 4
           }}
         >
-
-<form onSubmit={handleNavigate}>
-          <m.div variants={varFade().inUp}>
-        <Typography variant="h2" sx={{ mb: 4, color: 'white'}}> 
-        Find Your Dream Job In <div> Simple Steps</div>
-        </Typography>
-      </m.div>
-         
+        <form onSubmit={handleNavigate}>
             <m.div variants={varFade().inUp} style={{display: 'flex', justifyContent: 'center'}} >
-            <Card sx={{ maxWidth: 345 }}>
+            <Card sx={{ maxWidth: 500, width: '100%' }}>
               <CardContent>
-              <TextField InputProps={{endAdornment: <InputAdornment position="start"><Iconify icon="material-symbols:search" /></InputAdornment>}} label="Search" variant="outlined" autoComplete='off' onChange={e => setSearchData({...searchData, title: e.target.value})} value={searchData.title}/>
+              <TextField InputProps={{endAdornment: <InputAdornment position="start"><Iconify icon="material-symbols:search" /></InputAdornment>}} label="Search Job" variant="outlined" autoComplete='off' sx={{ width: '100%' }} onChange={e => setSearchData({...searchData, title: e.target.value})} value={searchData.title}/>
               </CardContent>
               <CardActions disableSpacing>
               <Tooltip title="Filter" placement="bottom">
@@ -129,7 +124,7 @@ export default function HomeBanner() {
                 </ExpandMore>          
               </Tooltip>
                 {expanded !== true ?
-                <Button type="submit" disabled={searchData.title === '' ? true : false} variant="contained" style={{marginRight: '10px'}}>Search</Button>
+                <Button type="submit" variant="contained" disabled={searchData.title === '' ? true : false} style={{marginRight: '10px'}}>Search</Button>
                 : null}
               </CardActions>
               <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -165,7 +160,7 @@ export default function HomeBanner() {
                 </CardContent>
                 <CardActions disableSpacing>
                 {expanded === true ?
-                <Button type="submit" disabled={searchData.title === '' ? true : false} variant="contained" style={{marginRight: '10px', marginLeft: 'auto'}}>Search</Button>
+                <Button type="submit" variant="contained" disabled={searchData.title === '' ? true : false} style={{marginRight: '10px', marginLeft: 'auto'}}>Search</Button>
                 : null}
               </CardActions>
               </Collapse>
@@ -174,7 +169,7 @@ export default function HomeBanner() {
 
             </m.div>
            
-      </form>
+          </form>
         </Box>
 
 

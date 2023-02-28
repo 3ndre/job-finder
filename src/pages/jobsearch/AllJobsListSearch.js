@@ -12,9 +12,8 @@ import Scrollbar from '../../components/Scrollbar';
 
 // ----------------------------------------------------------------------
 
-export default function AllJobsList({data}) {
+export default function AllJobsListSearch({data}) {
 
-  
   return (
     <Card>
 

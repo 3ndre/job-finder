@@ -41,8 +41,8 @@ export const getJob = createAsyncThunk("api/getJob", async () => {
 
 //Get search of posted job
 
-export const getJobSearch = createAsyncThunk("api/getJobSearch", async ({title}) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/?title=${title}`, {
+export const getJobSearch = createAsyncThunk("api/getJobSearch", async (searchApiData) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/?${searchApiData}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
@@ -182,6 +182,27 @@ export const updateUserByOrg = createAsyncThunk("api/updateUserByOrg", async ({u
         data: data,
     };
 });
+
+
+//Put request to update account details
+
+export const updateUser = createAsyncThunk("api/updateUser", async ({updateUserData}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/users/me/`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+        body: JSON.stringify(updateUserData)
+    });
+    const data = await response.json();
+    return {
+        status: response.status,
+        data: data,
+    };
+});
+
 
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -553,6 +574,20 @@ const apiSlice = createSlice({
             state.error = action.payload;
         },
 
+
+         //PUT - Update User
+         [updateUser.pending]: (state, action) => {
+            state.loading = true;
+            state.userResponse = null;
+        },
+        [updateUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.userResponse = action.payload;
+        },
+        [updateUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
       
     }
 })

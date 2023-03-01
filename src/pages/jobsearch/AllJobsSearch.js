@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useParams } from "react-router-dom";
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box,  Container } from '@mui/material';
@@ -31,8 +30,8 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 export default function AllJobsSearch({data, loading}) {
 
-    let title = useParams().title;
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const title = urlParams.get('title');
 
     const [filter, setFilter] = useState('Latest');
 
@@ -40,7 +39,7 @@ export default function AllJobsSearch({data, loading}) {
         setFilter(event.target.value);
     };
 
-    console.log(data)
+ 
   
   return (
     <RootStyle>
@@ -48,7 +47,7 @@ export default function AllJobsSearch({data, loading}) {
       <Container component={MotionViewport}>
 
       <HeaderBreadcrumbs
-          heading={`Results for "${title && title}"`}
+          heading={`Results for "${title !== null ? title : ''}"`}
           links={[
             { name: `${data ? `(${data.count} jobs)` : '(0 jobs)'}`}
           ]}

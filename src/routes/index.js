@@ -36,7 +36,7 @@ export default function Router() {
       children: [
         { path: '/', element: <Home/>},
         { path: '/job/:id', element: <JobDetails/>},
-        { path: '/search/:title', element: <JobSearch/>},
+        { path: '/search', element: <JobSearch/>},
         { path: '/login', element: <Login/>},
         { path: '/register', element: <Register/>},
         { path: '/activate/:id/:token', element: <Activate/>},
@@ -58,6 +58,7 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: 'dashboard', element: <Dashboard /> },
+        { path: 'settings', element: <AccountSettings /> },
         { path: 'job-board', element: <JobBoard /> },
         { path: 'org-board', element: <OrganizationBoard /> },
         { path: 'job-board/create', element: <JobBoardIndex /> },
@@ -72,6 +73,7 @@ export default function Router() {
       element: <DashboardLayoutUser />,
       children: [
         { path: 'dashboard', element: <DashboardUser /> },
+        { path: 'settings', element: <AccountSettings /> },
       ],
     },
     
@@ -96,4 +98,5 @@ const JobBoardIndex = Loadable(lazy(() => import('../pages/job/forms/JobBoardInd
 const OrganizationBoardIndex = Loadable(lazy(() => import('../pages/user/forms/OrganizationBoardIndex')));
 const JobBoardIndexUpdate = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndexUpdate')));
 const OrganizationBoardIndexUpdate = Loadable(lazy(() => import('../pages/user/forms/OrganizationBoardIndexUpdate')));
+const AccountSettings = Loadable(lazy(() => import('../pages/AccountSettings')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

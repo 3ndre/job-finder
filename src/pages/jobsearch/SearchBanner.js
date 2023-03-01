@@ -8,7 +8,7 @@ import { getJobSearch } from '../../redux/features/apiSlice';
 
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box,  Container, Button, Tooltip, TextField, Collapse, Card, CardContent, CardActions, IconButton, InputAdornment} from '@mui/material';
+import { Box, Grid, Container, Button, Tooltip, TextField, Collapse, Card, CardContent, CardActions, IconButton, InputAdornment} from '@mui/material';
 
 //form
 import InputLabel from '@mui/material/InputLabel';
@@ -53,31 +53,54 @@ export default function SearchBanner() {
 
   //--------------states------------------------
   const [expanded, setExpanded] = useState(false);
-  const [level, setLevel] = useState('');
-  const [subject, setSubject] = useState('');
+  const [position, setPosition] = useState('');
   
-
-  const [searchData, setSearchData] = useState({ title: ''});
+  const [searchData, setSearchData] = useState({ title: '', location: '', salaryLow: '', salaryHigh: ''});
 
   //-------------- triggering state change-----------------
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const handleChangeLevel = (event) => {
-    setLevel(event.target.value);
+  const handleChangePosition = (event) => {
+    setPosition(event.target.value);
   };
 
-  const handleChangeSubject = (event) => {
-    setSubject(event.target.value);
-  };
   
 
   const handleNavigate = (e) => {
     e.preventDefault();
-    dispatch(getJobSearch(searchData.title));
-    navigate(`/search/${searchData.title}`);
-    setSearchData({ title: ''});
+   
+    let searchApiData = '';
+
+      if (searchData.title) {
+        searchApiData += `&title=${searchData.title}`;
+      }
+
+      if (searchData.position) {
+        searchApiData += `&position=${searchData.position}`;
+      }
+
+      if (searchData.salaryLow) {
+        searchApiData += `&salary_low=${Number(searchData.salaryLow)}`;
+      }
+
+      if (searchData.salaryHigh) {
+        searchApiData += `&salary_high=${Number(searchData.salaryHigh)}`;
+      }
+
+      if (position) {
+        searchApiData += `&position=${position}`;
+      }
+
+      // Remove the leading '&' character
+      searchApiData = searchApiData.substring(1);
+
+      dispatch(getJobSearch(searchApiData));
+      navigate(`/search?${searchApiData}`);
+      setSearchData({ title: '', location: '', salaryLow: '', salaryHigh: ''});
+      setPosition('');
+    
 }
 
 
@@ -129,33 +152,37 @@ export default function SearchBanner() {
               </CardActions>
               <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                <FormControl fullWidth sx={{mb:1.5}}>
-                  <InputLabel >Level</InputLabel>
+                <FormControl fullWidth sx={{mb:1.5, textAlign: 'left'}}>
+                  <InputLabel >Position</InputLabel>
                   <Select
-                    value={level}
-                    label="Level"
-                    onChange={handleChangeLevel}
+                    value={position}
+                    label="Position"
+                    onChange={handleChangePosition}
                     autoComplete='off'
                   >
-                    <MenuItem value={10}>Primary</MenuItem>
-                    <MenuItem value={20}>Secondary</MenuItem>
-                    <MenuItem value={30}>Higher</MenuItem>
+                    <MenuItem value={'Intern'}>Intern</MenuItem>
+                    <MenuItem value={'Volunteer'}>Volunteer</MenuItem>
+                    <MenuItem value={'Senior'}>Senior Level</MenuItem>
+                    <MenuItem value={'Mid'}>Mid Level</MenuItem>
+                    <MenuItem value={'Junior'}>Junior Level</MenuItem>
+                    <MenuItem value={'Trainee'}>Traniee</MenuItem>
                   </Select>
                 </FormControl>
 
-                <FormControl fullWidth sx={{mb:1.5}}>
-                  <InputLabel >Subject</InputLabel>
-                  <Select
-                    value={subject}
-                    label="Subject"
-                    onChange={handleChangeSubject}
-                    autoComplete='off'
-                  >
-                    <MenuItem value={10}>Science</MenuItem>
-                    <MenuItem value={20}>Math</MenuItem>
-                    <MenuItem value={30}>English</MenuItem>
-                  </Select>
-                </FormControl>
+                <Grid container spacing={2} sx={{mb:1.5}}>
+                <Grid item xs={6}>
+                    <TextField id="salaryLow" type="number" InputProps={{startAdornment: <InputAdornment position="start">Low</InputAdornment>}}  placeholder="10000" label="Salary" variant="outlined"  fullWidth  autoComplete='off' onChange={e => setSearchData({...searchData, salaryLow: e.target.value})} value={searchData.salaryLow}/>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <TextField id="salaryHigh" type="number" InputProps={{startAdornment: <InputAdornment position="start">High</InputAdornment>}}  placeholder="40000" label="Salary" variant="outlined"  fullWidth  autoComplete='off' onChange={e => setSearchData({...searchData, salaryHigh: e.target.value})} value={searchData.salaryHigh}/>
+                </Grid>
+                </Grid>
+              
+
+                <Grid item xs={6}>
+                    <TextField id="location" placeholder="Kathmandu" label="Location" variant="outlined"  fullWidth  autoComplete='off' onChange={e => setSearchData({...searchData, location: e.target.value})} value={searchData.location}/>
+                </Grid>
 
                 </CardContent>
                 <CardActions disableSpacing>

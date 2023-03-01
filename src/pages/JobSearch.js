@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
 // @mui
 import { styled } from '@mui/material/styles';
 // components
@@ -35,19 +34,28 @@ export default function JobDetails() {
 
     const dispatch = useDispatch();
 
-    let title = useParams().title;
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchData = {
+      title: urlParams.get('title') || '',
+      location: urlParams.get('location') || '',
+      salaryLow: Number(urlParams.get('salary_low')) || 0,
+      salaryHigh: Number(urlParams.get('salary_high')) || 0,
+      position: urlParams.get('position') || '',
+    };
+
+    const searchApiData = Object.entries(searchData)
+    .filter(([_, value]) => value !== '') // remove empty values
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
+
+
+    useEffect(() => {
+      dispatch(getJobSearch(searchApiData));
+    }, [searchApiData]);
+
 
     const { jobSearch, loading } = useSelector((state) => ({...state.api}));
 
-
-    const fetchByTitle = () => {
-      dispatch(getJobSearch({title}));
-    }
- 
- 
-       useEffect(() => {
-         fetchByTitle();
-     }, [title]);
 
 
   return (

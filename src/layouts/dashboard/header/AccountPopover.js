@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar } from '@mui/material';
@@ -17,7 +17,7 @@ const MENU_OPTIONS = [
   },
   {
     label: 'Settings',
-    linkTo: '/dashboard',
+    linkTo: '/settings',
   },
 ];
 
@@ -98,7 +98,7 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} to={option.linkTo} onClick={handleClose}>
+            <MenuItem component={RouterLink} key={option.label} to={option.linkTo} onClick={handleClose}>
               {option.label}
             </MenuItem>
           ))}

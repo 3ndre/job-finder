@@ -69,7 +69,7 @@ export default function JobBoardUpdateForm({data, id}) {
             }
 
 
-            const result = await dispatch(updateJob({ updateJobData, id })) //redux slice to createUser
+            const result = await dispatch(updateJob({ updateJobData, id })) //redux slice  to update job data
             
 
 

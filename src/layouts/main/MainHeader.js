@@ -81,8 +81,16 @@ export default function MainHeader() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <Button component={RouterLink} to="/login" startIcon={<Iconify icon={'tabler:login'} width={22} height={22} />}>Login</Button>
-
+          {localStorage.getItem('access_token') === null ? 
+          <>
+            <Button component={RouterLink} to="/login" startIcon={<Iconify icon={'tabler:login'} width={22} height={22} />}>Login</Button>
+          </>
+          :
+          <>
+            <Button variant="outlined" component={RouterLink} to="/dashboard" startIcon={<Iconify icon={'material-symbols:dashboard-rounded'} width={22} height={22} />}>Dashboard</Button>
+          </>
+          }
+          
 
         </Container>
       </ToolbarStyle>

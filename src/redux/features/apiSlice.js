@@ -24,6 +24,21 @@ export const getUser = createAsyncThunk("api/getUser", async () => {
 })
 
 
+//Get request to get user CV
+export const getUserCV = createAsyncThunk("api/getUserCV", async () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/auth/users/cv/`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    }).then((res) => 
+    res.json()
+    );
+})
+
+
 //Get list of posted job
 
 export const getJob = createAsyncThunk("api/getJob", async () => {
@@ -269,6 +284,26 @@ export const createUserByOrg = createAsyncThunk("api/createUserByOrg", async ({c
 
 
 
+//Post User CV
+
+export const createCV = createAsyncThunk("api/createCV", async (formData) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/users/cv/`, {
+        method: "POST",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+        body: formData
+    });
+    const data = await response.json();
+    return {
+        status: response.status,
+        data: data,
+    };
+});
+
+
+
 //------------------------------------------------------------Authentication ------------------------------------------------
 
 //Post request to Login
@@ -327,9 +362,11 @@ const apiSlice = createSlice({
         regResponse: null,
         actResponse: null,
         jobResponse: null,
+        cvResponse: null,
         userResponse: null,
         resendResponse: null,
         user: [],
+        cv: [],
         job: [],
         jobSearch: [],
         orgUser: [],
@@ -351,6 +388,19 @@ const apiSlice = createSlice({
             state.user = [action.payload];
         },
         [getUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+         //get cv list
+         [getUserCV.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getUserCV.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.cv = [action.payload];
+        },
+        [getUserCV.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
@@ -492,6 +542,22 @@ const apiSlice = createSlice({
             state.userResponse = action.payload;
         },
         [createUserByOrg.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+
+        //post CV DATA
+        [createCV.pending]: (state, action) => {
+            state.loading = true;
+            state.cvResponse = null;
+        },
+        [createCV.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.cvResponse = action.payload;
+        },
+        [createCV.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

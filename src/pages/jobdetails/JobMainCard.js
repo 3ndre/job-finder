@@ -1,4 +1,5 @@
 import React  from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { Card, Avatar, Typography, Button } from '@mui/material';
 
 
@@ -30,11 +31,21 @@ export default function JobMainCard({data}) {
         {data && data.location}
       </Typography>
 
-     
+    
 
-        <Button variant="contained" sx={{mb: 3}}>
+        {localStorage.getItem('access_token') === null ? 
+          <>
+          <Button variant="contained" sx={{mb: 3}} component={RouterLink} to="/login" >
+              Login to Apply
+          </Button>
+          </>
+          :
+          <>
+          <Button variant="contained" sx={{mb: 3}}>
             Apply
-        </Button>
+          </Button>
+          </>
+          }
 
     
     </Card>

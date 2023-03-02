@@ -11,6 +11,7 @@ const sidebarConfig = [
     subheader: 'General',
     items: [
       { title: 'Dashboard', path: '/dashboard', icon: <Iconify icon="material-symbols:dashboard-rounded"/> },
+      { title: 'My CVs', path: '/cv', icon: <Iconify icon="pepicons-pop:cv"/> },
     ],
   },
 

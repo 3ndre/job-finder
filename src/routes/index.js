@@ -74,6 +74,7 @@ export default function Router() {
       children: [
         { path: 'dashboard', element: <DashboardUser /> },
         { path: 'settings', element: <AccountSettings /> },
+        { path: 'cv', element: <CV /> },
       ],
     },
     
@@ -99,4 +100,5 @@ const OrganizationBoardIndex = Loadable(lazy(() => import('../pages/user/forms/O
 const JobBoardIndexUpdate = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndexUpdate')));
 const OrganizationBoardIndexUpdate = Loadable(lazy(() => import('../pages/user/forms/OrganizationBoardIndexUpdate')));
 const AccountSettings = Loadable(lazy(() => import('../pages/AccountSettings')));
+const CV = Loadable(lazy(() => import('../pages/dashboarduser/CV')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

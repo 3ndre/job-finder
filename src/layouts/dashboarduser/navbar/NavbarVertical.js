@@ -18,8 +18,6 @@ import { NavSectionVertical } from '../../../components/nav-section';
 //
 import navConfig from './NavConfig';
 
-import NavbarAccount from './NavbarAccount';
-
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -72,13 +70,13 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
           ...(isCollapse && { alignItems: 'center' }),
         }}
       >
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{mb: 1, mt: 1.5}}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mt: 1.5}}>
           <Logo />
 
          
         </Stack>
 
-        <NavbarAccount isCollapse={isCollapse} />
+       
       </Stack>
 
       <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} />

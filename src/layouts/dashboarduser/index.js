@@ -48,7 +48,7 @@ export default function DashboardLayoutUser() {
 
   const [open, setOpen] = useState(false);
 
-  const verticalLayout = themeLayout === 'vertical';
+  const verticalLayout = themeLayout === 'horizontal';
 
   if (verticalLayout) {
     return (

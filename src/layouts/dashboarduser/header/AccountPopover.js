@@ -12,8 +12,8 @@ import { useSelector } from 'react-redux';
 const MENU_OPTIONS = [
 
   {
-    label: 'Profile',
-    linkTo: '/dashboard',
+    label: 'My CVs',
+    linkTo: '/cv',
   },
   {
     label: 'Settings',

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 // @mui
-import { Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // components
@@ -16,6 +16,7 @@ export default function DashboardUser() {
   const { themeStretch } = useSettings();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const fetchUser = () => {
     dispatch(getUser());
@@ -23,20 +24,17 @@ export default function DashboardUser() {
 
   useEffect(() => {
     fetchUser();
+    navigate('/');
 }, []);
-
-
 
   if (localStorage.getItem('access_token') === null) {
     return <Navigate to="/login" />;
   }
 
   return (
-    <Page title="Dashboard">
+    <Page title="User">
       <Container maxWidth={themeStretch ? false : 'xl'}>
-        <Typography variant="h3" component="h1" paragraph>
-          Dashboard
-        </Typography>
+       
       </Container>
     </Page>
   );

@@ -8,9 +8,8 @@ import { Card, Avatar, Typography, Button } from '@mui/material';
 
 
 
-export default function JobMainCard({data}) {
+export default function JobMainCard({data, id}) {
 
- 
 
   return (
 
@@ -41,7 +40,7 @@ export default function JobMainCard({data}) {
           </>
           :
           <>
-          <Button variant="contained" sx={{mb: 3}}>
+          <Button variant="contained" sx={{mb: 3}} component={RouterLink} to={`/job/${id}/apply`}>
             Apply
           </Button>
           </>

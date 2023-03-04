@@ -8,10 +8,10 @@ const sidebarConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: 'General',
+    subheader: '',
     items: [
-      { title: 'Dashboard', path: '/dashboard', icon: <Iconify icon="material-symbols:dashboard-rounded"/> },
       { title: 'My CVs', path: '/cv', icon: <Iconify icon="pepicons-pop:cv"/> },
+      { title: 'Settings', path: '/settings', icon: <Iconify icon="material-symbols:settings"/> },
     ],
   },
 

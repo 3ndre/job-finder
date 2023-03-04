@@ -1,19 +1,22 @@
 import React, { useEffect } from "react";
+import { Navigate } from 'react-router-dom';
 import { useParams } from "react-router-dom";
 // @mui
 import { Container, Grid, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 // components
-import Page from '../components/Page';
-import SkeletonItemHome from '../components/SkeletonItemHome';
+import Page from '../../components/Page';
+import SkeletonItemHome from '../../components/SkeletonItemHome';
+
+
 // hooks
-import useSettings from '../hooks/useSettings';
+import useSettings from '../../hooks/useSettings';
 
 //--------------------Redux---------------------------------
 import { useDispatch, useSelector } from 'react-redux';
-import { getJobById } from '../redux/features/apiSlice';
-import JobMainCard from "./jobdetails/JobMainCard";
-import JobDetailsCard from "./jobdetails/JobDetailsCard";
+import { getUserCV, getJobById } from '../../redux/features/apiSlice';
+import JobApplyForm from "./JobApplyForm";
+
 
 
 
@@ -31,30 +34,36 @@ const RootStyle = styled('div')(({theme}) => ({
 // ----------------------------------------------------------------------
 
 
-export default function JobDetails() {
+export default function JobApply() {
 
     const { themeStretch } = useSettings();
 
     const dispatch = useDispatch();
 
-    const { jobById, loading } = useSelector((state) => ({...state.api}));
+    const { cv, jobById, loading } = useSelector((state) => ({...state.api}));
 
     let id = useParams().id;
 
 
-    const fetchById = () => {
+
+    const fetchUserCV = () => {
+        dispatch(getUserCV());
         dispatch(getJobById({id}));
     }
    
    
     useEffect(() => {
-        fetchById();
+        fetchUserCV();
     }, []);
 
 
+    if (localStorage.getItem('access_token') === null) {
+      return <Navigate to="/login" />;
+    }
+
 
   return (
-    <Page title="Job Details">
+    <Page title="Job Apply">
      <RootStyle>   
      <Container maxWidth={themeStretch ? false : 'lg'}>
 
@@ -64,23 +73,17 @@ export default function JobDetails() {
       <>
 
      <Typography variant="h4" sx={{mb: 3}}>
-        Job Details
+        Applying for: {jobById && jobById[0] && jobById.length > 0 ? <>{jobById[0].title}</> : <></>}
      </Typography>
-     
-     <Grid container spacing={3}>
-     <Grid item xs={12} md={4}>
-        <Stack spacing={3}>
-          <JobMainCard data={jobById[0]} id={id}/>  
-        </Stack>
-      </Grid>
 
-      <Grid item xs={12} md={8}>
-        <Stack spacing={2}>
-            <JobDetailsCard data={jobById[0]} />
-        </Stack>
-      </Grid>
+     {cv && jobById && cv[0] && jobById[0] && jobById.length > 0  ? 
 
-     </Grid>
+         <JobApplyForm cv={cv[0]} job={jobById} id={id}/>
+
+         :
+
+         <SkeletonItemHome />
+      }
 
      </>}
     </Container>

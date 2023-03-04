@@ -1,7 +1,8 @@
+import React, { useEffect } from 'react';
 import { useLocation, Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Button, AppBar, Toolbar, Container } from '@mui/material';
+import { Box, Button, AppBar, Toolbar, Container, Stack } from '@mui/material';
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop';
 import useResponsive from '../../hooks/useResponsive';
@@ -15,6 +16,11 @@ import Iconify from '../../components/Iconify';
 //
 import MenuDesktop from './MenuDesktop';
 import navConfig from './MenuConfig';
+
+//redux
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../../redux/features/apiSlice';
+import AccountPopover from '../dashboarduser/header/AccountPopover';
 
 // ----------------------------------------------------------------------
 
@@ -55,6 +61,20 @@ export default function MainHeader() {
 
   const isHome = pathname === '/';
 
+  const dispatch = useDispatch();
+ 
+
+  const fetchUser = () => {
+    dispatch(getUser());
+  }
+
+  useEffect(() => {
+    fetchUser();
+}, []);
+
+const { user } = useSelector((state) => ({...state.api}));
+  
+
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: 'white', height: { md: HEADER.MAIN_DESKTOP_HEIGHT - 16 } }} >
       <ToolbarStyle
@@ -87,7 +107,15 @@ export default function MainHeader() {
           </>
           :
           <>
+            { user && (user[0]?.is_organization || user[0]?.is_staff) ?
             <Button variant="outlined" component={RouterLink} to="/dashboard" startIcon={<Iconify icon={'material-symbols:dashboard-rounded'} width={22} height={22} />}>Dashboard</Button>
+            :
+            <>
+             <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+             <AccountPopover/>
+            </Stack>
+            </>
+            }
           </>
           }
           

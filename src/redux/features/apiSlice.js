@@ -304,6 +304,25 @@ export const createCV = createAsyncThunk("api/createCV", async (formData) => {
 
 
 
+//Post Apply job (Job application)
+
+export const createJobApply = createAsyncThunk("api/createJobApply", async ({jobData}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/application/submit/`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+        body: JSON.stringify(jobData)
+    });
+    const data = await response.json();
+    return {
+        status: response.status,
+        data: data,
+    };
+});
+
 //------------------------------------------------------------Authentication ------------------------------------------------
 
 //Post request to Login
@@ -363,6 +382,7 @@ const apiSlice = createSlice({
         actResponse: null,
         jobResponse: null,
         cvResponse: null,
+        applyResponse: null,
         userResponse: null,
         resendResponse: null,
         user: [],
@@ -558,6 +578,21 @@ const apiSlice = createSlice({
             state.cvResponse = action.payload;
         },
         [createCV.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+         //post Job Apply data
+         [createJobApply.pending]: (state, action) => {
+            state.loading = true;
+            state.applyResponse = null;
+        },
+        [createJobApply.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.applyResponse = action.payload;
+        },
+        [createJobApply.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

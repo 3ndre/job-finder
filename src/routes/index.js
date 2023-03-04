@@ -36,6 +36,7 @@ export default function Router() {
       children: [
         { path: '/', element: <Home/>},
         { path: '/job/:id', element: <JobDetails/>},
+        { path: '/job/:id/apply', element: <JobApply/>},
         { path: '/search', element: <JobSearch/>},
         { path: '/login', element: <Login/>},
         { path: '/register', element: <Register/>},
@@ -86,13 +87,13 @@ export default function Router() {
 // Dashboard
 const Home = Loadable(lazy(() => import('../pages/Home')));
 const JobDetails = Loadable(lazy(() => import('../pages/JobDetails')));
+const JobApply = Loadable(lazy(() => import('../pages/jobdetails/JobApply')));
 const JobSearch = Loadable(lazy(() => import('../pages/JobSearch')));
 const Location = Loadable(lazy(() => import('../pages/Location')));
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const Activate = Loadable(lazy(() => import('../pages/auth/Activate')));
 const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
-const DashboardUser = Loadable(lazy(() => import('../pages/dashboarduser/DashboardUser')));
 const JobBoard = Loadable(lazy(() => import('../pages/JobBoard')));
 const OrganizationBoard = Loadable(lazy(() => import('../pages/OrganizationBoard')));
 const JobBoardIndex = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndex')));
@@ -101,4 +102,5 @@ const JobBoardIndexUpdate = Loadable(lazy(() => import('../pages/job/forms/JobBo
 const OrganizationBoardIndexUpdate = Loadable(lazy(() => import('../pages/user/forms/OrganizationBoardIndexUpdate')));
 const AccountSettings = Loadable(lazy(() => import('../pages/AccountSettings')));
 const CV = Loadable(lazy(() => import('../pages/dashboarduser/CV')));
+const DashboardUser = Loadable(lazy(() => import('../pages/dashboarduser/DashboardUser')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

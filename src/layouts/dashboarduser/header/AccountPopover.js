@@ -32,7 +32,9 @@ export default function AccountPopover() {
 
   function disconnected () {
     localStorage.clear();
+    localStorage.removeItem('user_data');
     navigate('/login');
+    window.location.reload();
   }
 
   const handleOpen = (event) => {

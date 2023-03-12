@@ -7,8 +7,7 @@ import MainLayout from '../layouts/main'
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // components
 import LoadingScreen from '../components/LoadingScreen';
-//Redux
-import { useSelector } from 'react-redux';
+
 
 
 // ----------------------------------------------------------------------
@@ -26,8 +25,7 @@ const Loadable = (Component) => (props) => {
 
 export default function Router() {
 
-  const { user } = useSelector((state) => ({...state.api}));
-
+  const userData = JSON.parse(localStorage.getItem('user_data'));
 
   return useRoutes([
     {
@@ -53,7 +51,7 @@ export default function Router() {
       ],
     },
     
-    user && (user[0]?.is_organization || user[0]?.is_staff) ?
+    userData && userData.userData && (userData.userData.is_organization === true || userData.userData.is_staff === true) ?
     {
       path: '',
       element: <DashboardLayout />,
@@ -68,7 +66,7 @@ export default function Router() {
         { path: 'org-board/update/:id', element: <OrganizationBoardIndexUpdate /> },
       ],
     }
-    :
+    : userData && userData.userData && (userData.userData.is_organization === false || userData.userData.is_staff === false) ?
     {
       path: '',
       element: <DashboardLayoutUser />,
@@ -76,6 +74,22 @@ export default function Router() {
         { path: 'dashboard', element: <DashboardUser /> },
         { path: 'settings', element: <AccountSettings /> },
         { path: 'cv', element: <CV /> },
+      ],
+    }
+    :
+    {
+      path: '',
+      element: <MainLayout />,
+      children: [
+        { path: 'dashboard', element: <LoadingPage /> },
+        { path: 'settings', element: <LoadingPage /> },
+        { path: 'cv', element: <LoadingPage /> },
+        { path: 'job-board', element: <LoadingPage /> },
+        { path: 'org-board', element: <LoadingPage /> },
+        { path: 'job-board/create', element: <LoadingPage /> },
+        { path: 'org-board/create', element: <LoadingPage /> },
+        { path: 'job-board/update/:id', element: <LoadingPage /> },
+        { path: 'org-board/update/:id', element: <LoadingPage /> },
       ],
     },
     
@@ -103,4 +117,5 @@ const OrganizationBoardIndexUpdate = Loadable(lazy(() => import('../pages/user/f
 const AccountSettings = Loadable(lazy(() => import('../pages/AccountSettings')));
 const CV = Loadable(lazy(() => import('../pages/dashboarduser/CV')));
 const DashboardUser = Loadable(lazy(() => import('../pages/dashboarduser/DashboardUser')));
+const LoadingPage = Loadable(lazy(() => import('../pages/LoadingPage')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

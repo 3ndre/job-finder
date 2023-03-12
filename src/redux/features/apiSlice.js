@@ -24,6 +24,21 @@ export const getUser = createAsyncThunk("api/getUser", async () => {
 })
 
 
+//Get all users
+export const getAllUser = createAsyncThunk("api/getAllUser", async () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/auth/users/`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    }).then((res) => 
+    res.json()
+    );
+})
+
+
 //Get request to get user CV
 export const getUserCV = createAsyncThunk("api/getUserCV", async () => {
     return fetch(`${process.env.REACT_APP_API_URL}/auth/users/cv/`, {
@@ -386,6 +401,7 @@ const apiSlice = createSlice({
         userResponse: null,
         resendResponse: null,
         user: [],
+        userList: [],
         cv: [],
         job: [],
         jobSearch: [],
@@ -408,6 +424,19 @@ const apiSlice = createSlice({
             state.user = [action.payload];
         },
         [getUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        //get all user 
+        [getAllUser.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getAllUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.userList = [action.payload];
+        },
+        [getAllUser.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
@@ -467,7 +496,7 @@ const apiSlice = createSlice({
         },
 
 
-        //get user list
+        //get org list
         [getUserByOrg.pending]: (state, action) => {
             state.loading = true;
         },

@@ -19,8 +19,7 @@ const menuConfig = [
         subheader: '',
         items: [
           { title: 'Hire Staff', icon: <Iconify icon={'fluent-mdl2:recruitment-management'} {...ICON_SIZE} />, path: '/hire' },
-          { title: 'Top Staff', icon: <Iconify icon={'icon-park-outline:file-staff'} {...ICON_SIZE} />, path: '/top' },
-          { title: 'Admission', icon: <Iconify icon={'material-symbols:other-admission'} {...ICON_SIZE} />, path: '/admission' },
+          { title: 'Top Staff', icon: <Iconify icon={'icon-park-outline:file-staff'} {...ICON_SIZE} />, path: '/topstaff' },
         ],
       },
     ],
@@ -33,7 +32,7 @@ const menuConfig = [
         subheader: '',
         items: [
           { title: 'Student Services', icon: <Iconify icon={'mdi:account-student-outline'} {...ICON_SIZE} />, path: '/student' },
-          { title: 'Find Jobs', icon: <Iconify icon={'material-symbols:find-in-page-outline'} {...ICON_SIZE} />, path: '/jobs' },
+          { title: 'Find Jobs', icon: <Iconify icon={'material-symbols:find-in-page-outline'} {...ICON_SIZE} />, path: '/search' },
         ],
       },
     ],
@@ -50,6 +49,11 @@ const menuConfig = [
         ],
       },
     ],
+  },
+  {
+    title: 'Admission',
+    icon: <Iconify icon={'codicon:organization'} {...ICON_SIZE} />,
+    path: '/admission'
   },
 ];
 

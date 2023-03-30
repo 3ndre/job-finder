@@ -36,19 +36,19 @@ const navConfig = [
     id: 2,
     title: 'Hire Staff',
     icon: <Iconify icon={'fluent-mdl2:recruitment-management'} {...ICON_SIZE} />,
+    path: '/topstaff'
+  },
+  {
+    id: 3,
+    title: 'Student',
+    icon: <Iconify icon={'mdi:account-student-outline'} {...ICON_SIZE} />,
     path: '/recents'
   },
   {
     id: 3,
-    title: 'Top Staff',
-    icon: <Iconify icon={'icon-park-outline:file-staff'} {...ICON_SIZE} />,
-    path: '/recents'
-  },
-  {
-    id: 4,
-    title: 'Student',
-    icon: <Iconify icon={'mdi:account-student-outline'} {...ICON_SIZE} />,
-    path: '/recents'
+    title: 'Admission',
+    icon: <Iconify icon={'material-symbols:other-admission-outline'} {...ICON_SIZE} />,
+    path: '/admission'
   },
 ];
 

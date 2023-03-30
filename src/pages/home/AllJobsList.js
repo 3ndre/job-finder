@@ -54,7 +54,7 @@ function JobItem({jobData}) {
  
   return (
     <Stack direction="row" alignItems="center" spacing={2} sx={{ width: '100%'}}>
-      <Image alt="" src="https://via.placeholder.com/48" sx={{ width: 48, height: 48, borderRadius: 1.5, flexShrink: 0 }} />
+      <Image alt="" src={`${process.env.REACT_APP_API_URL}${jobData.author.avatar}`} sx={{ width: 48, height: 48, borderRadius: 1.5, flexShrink: 0 }} />
       <Box sx={{ flexGrow: 1 }}>
         <Link component={RouterLink} to={`/job/${jobData.id}`} color="inherit" style={{textDecoration: 'none'}}>
           <Typography variant="subtitle2" noWrap>

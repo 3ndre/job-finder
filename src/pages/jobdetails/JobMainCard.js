@@ -18,7 +18,7 @@ export default function JobMainCard({data, id}) {
     <Card sx={{ py: 3, px: 3, textAlign: 'center' }}>
 
       <div style={{ display: 'flex', justifyContent: 'center'}}>
-      <Avatar alt="" sx={{ width: 64, height: 64, left: 0, right: 0}} src="https://via.placeholder.com/48"/>
+      <Avatar alt="" sx={{ width: 64, height: 64, left: 0, right: 0}} src={data && `${process.env.REACT_APP_API_URL}${data.author.avatar}`}/>
       </div>
 
 

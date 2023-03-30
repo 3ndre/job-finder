@@ -49,7 +49,7 @@ export default function JobApplyForm({cv, job, id}) {
   const navigate = useNavigate();
 
   const [cvData, setCvData] = useState('');
-  const [formData, setFormData] = useState({phone: '', referId: ''});
+  const [formData, setFormData] = useState({phone: '', referId: 'db1fe7f4'}); //change rederId to empty string
   const [coverLetter, setCoverLetter] = useState('');
 
   const [open, setOpen] = useState(false);
@@ -91,7 +91,7 @@ export default function JobApplyForm({cv, job, id}) {
 
       const result = await dispatch(createJobApply({ jobData }));
 
-      console.log(result)
+    
 
       if(result.payload !== null && result.payload.status === 201) {
 

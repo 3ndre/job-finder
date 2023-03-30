@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteJob, getJob } from '../../redux/features/apiSlice';
+import { getAllUsersCreated, deleteUserById } from '../../redux/features/apiSlice';
 import Scrollbar from '../../components/Scrollbar';
 import SkeletonItem from '../../components/SkeletonItem';
 import EmptyContent from '../../components/EmptyContent';
 import TableMoreMenu from '../../components/TableMoreMenu';
 import Iconify from '../../components/Iconify';
-
+import Label from '../../components/Label';
 
 
 //MUI
 import {
   Card,
-  Button,
   MenuItem,
   Typography,
   Table,
@@ -23,24 +22,24 @@ import {
   TableRow, TableCell, TableHead,  
 } from '@mui/material';
 
-import dayjs from 'dayjs';
 
 
 
 
-const JobList = () => {
+
+const UsersList = () => {
 
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
 
-  const { loading, job } = useSelector((state) => ({...state.api}));
+  const { loading, allUsers } = useSelector((state) => ({...state.api}));
     
 
   //Pop over menu table------------------------------------------
   const [openMenu, setOpenMenuActions] = useState(null);
   const [currentId, setCurrentId] = useState(null); //getting row ID for Popover
- 
 
   const handleOpenMenu = (event) => {
     setOpenMenuActions(event.currentTarget);
@@ -54,17 +53,16 @@ const JobList = () => {
 
 //-----------------------CRUD Action-----------------------------------
 
-  const fetchJob = () => {
-    dispatch(getJob());
+  const fetchUser = () => {
+    dispatch(getAllUsersCreated());
   }
 
-
-const handleDelete = (id) => {
+  const handleDelete = (id) => {
     
-    dispatch(deleteJob({id: id}))
+    dispatch(deleteUserById({id: id}))
     .then(() => {
-      // Fetch the updated job list
-      dispatch(getJob());
+      // Fetch the updated user lists
+      dispatch(getAllUsersCreated());
     });
     setOpenMenuActions(null);
 
@@ -73,22 +71,17 @@ const handleDelete = (id) => {
 
   const handleNavigate = (id) => {
 
-      navigate(`/job-board/update/${id}`)
-     window.location.reload();
-
-  }
-
-  const handleNavigateApplicants = (id) => {
-    navigate(`/job-board/applicants/${id}`)
+    navigate(`/user-board/update/${id}`)
+    window.location.reload();
 
 }
 
 
-  
-
   useEffect(() => {
-    fetchJob()
+    fetchUser()
 }, []);
+
+
 
 
 
@@ -100,11 +93,11 @@ const handleDelete = (id) => {
     {loading ? (<SkeletonItem/>) : (
 
       <>    
-      {job.length < 1 ? 
+      {allUsers.length < 1 ? 
                       
         <EmptyContent
         title="Empty!"
-        description={`You don't have any job listings yet.`}
+        description={`You don't have any users yet.`}
         sx={{
           '& span.MuiBox-root': { height: 160 },
         }}
@@ -122,23 +115,15 @@ const handleDelete = (id) => {
               
                     <TableRow>
                         <TableCell align="left">
-                            Title
+                            Email
                         </TableCell>
 
                         <TableCell align="left">
-                            Position
+                            Status
                         </TableCell>
 
                         <TableCell align="left">
-                            Created on
-                        </TableCell>
-
-                        <TableCell align="left">
-                            Applicants
-                        </TableCell>
-
-                        <TableCell align="left">
-                            Top staff
+                            Type
                         </TableCell>
                        
                         <TableCell></TableCell>
@@ -148,43 +133,36 @@ const handleDelete = (id) => {
 
                 <TableBody>
 
-                        {job && job.length > 0 && job[0] && job[0].results.map((item) => (
+                        {allUsers && allUsers.length > 0 && allUsers[0] && allUsers[0].results.map((item) => (
 
                         <TableRow hover key={item.id}>
 
                         <TableCell align="left">
                                 <Typography variant="subtitle2" noWrap>
-                                    {item.title.length > 12 ? <>{item.title.substr(0, 12)}...</> : item.title}
+                                    {item.email}
+                                </Typography>
+                              </TableCell>
+
+                    
+                              <TableCell align="left">
+                                <Typography variant="subtitle2" noWrap >
+                                    {item.status}
                                 </Typography>
                               </TableCell>
 
                               <TableCell align="left">
-                                <Typography variant="subtitle2" noWrap>
-                                    {item.position.length > 12 ? <>{item.position.substr(0, 12)}...</> : item.position}
-                                </Typography>
+                                <Label color={`${item.is_organization === true ? 'secondary' : item.is_staff === true ? 'info' : 'success'}`}>
+                                  {item.is_organization ? 'Organization' : item.is_staff ? 'Staff' : 'User'}
+                                </Label>
                               </TableCell>
 
-
-                              <TableCell align="left">
-                                <Typography variant="subtitle2" noWrap>
-                                    {dayjs(item.created_date).format('MMM D, YYYY')}
-                                </Typography>
-                              </TableCell>
-
-                              <TableCell align="left">
-                               <Button variant='outlined' onClick={() => handleNavigateApplicants(item.id)}>View</Button>
-                              </TableCell>
-
-                              <TableCell align="left">
-                               <Button variant='outlined' onClick={() => handleNavigateApplicants(item.id)}>View</Button>
-                              </TableCell>
         
                          
                           <TableCell align="right" onClick={() => {setCurrentId(item.id);}}>
                             <TableMoreMenu open={openMenu} onOpen={handleOpenMenu} onClose={handleCloseMenu}
                               actions={
                                 <>
-                                  <MenuItem  onClick={() => handleNavigate(currentId)}>
+                                  <MenuItem onClick={() => handleNavigate(currentId)}>
                                     <Iconify icon={'material-symbols:edit'} />
                                       Edit
                                   </MenuItem>
@@ -213,4 +191,4 @@ const handleDelete = (id) => {
   )
 }
 
-export default JobList
+export default UsersList

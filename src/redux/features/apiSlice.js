@@ -15,7 +15,7 @@ export const getUser = createAsyncThunk("api/getUser", async () => {
         method: "GET",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
     }).then((res) => 
@@ -30,7 +30,6 @@ export const getAllUser = createAsyncThunk("api/getAllUser", async () => {
         method: "GET",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
             'Authorization': `Bearer ${access_token.token}`,
         },
     }).then((res) => 
@@ -39,13 +38,27 @@ export const getAllUser = createAsyncThunk("api/getAllUser", async () => {
 })
 
 
+//Get top staff
+export const getTopStaff = createAsyncThunk("api/getTopStaff", async () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/auth/users/top_staff`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+        },
+    }).then((res) => 
+    res.json()
+    );
+})
+
+
+
 //Get request to get user CV
 export const getUserCV = createAsyncThunk("api/getUserCV", async () => {
     return fetch(`${process.env.REACT_APP_API_URL}/auth/users/cv/`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
     }).then((res) => 
@@ -61,7 +74,7 @@ export const getJob = createAsyncThunk("api/getJob", async () => {
         method: "GET",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+           
         },
     });
     const data = await response.json();
@@ -76,7 +89,7 @@ export const getJobSearch = createAsyncThunk("api/getJobSearch", async (searchAp
         method: "GET",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+
         },
     });
     const data = await response.json();
@@ -91,7 +104,21 @@ export const getJobById = createAsyncThunk("api/getJobById", async ({id}) => {
         method: "GET",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+        },
+    });
+    const data = await response.json();
+    return data;
+});
+
+
+//Get applicants by Job ID
+
+export const getApplicantsById = createAsyncThunk("api/getApplicantsById", async ({id}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/applicants/${id}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Authorization': `Bearer ${access_token.token}`,
         },
     });
     const data = await response.json();
@@ -107,7 +134,7 @@ export const getUserByOrg = createAsyncThunk("api/getUserByOrg", async () => {
         method: "GET",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
     });
@@ -124,7 +151,24 @@ export const getOrgUserById = createAsyncThunk("api/getOrgUserById", async ({id}
         method: "GET",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    });
+    const data = await response.json();
+    return data;
+});
+
+
+
+//Get list of created users
+
+export const getAllUsersCreated = createAsyncThunk("api/getAllUsersCreated", async () => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/user`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
     });
@@ -142,7 +186,7 @@ export const deleteJob = createAsyncThunk("api/deleteJob", async ({id}) => {
         method: "DELETE",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
     }).then((res) =>  {
@@ -158,7 +202,22 @@ export const deleteUser = createAsyncThunk("api/deleteUser", async ({id}) => {
         method: "DELETE",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+    }).then((res) =>  {
+        res.json();
+    }
+    );
+})
+
+
+//Delete user By ID
+export const deleteUserById = createAsyncThunk("api/deleteUserById", async ({id}) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/api/users/user/${id}/`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
             'Authorization': `Bearer ${access_token.token}`,
         },
     }).then((res) =>  {
@@ -180,7 +239,7 @@ export const updateJob = createAsyncThunk("api/updateJob", async ({updateJobData
         method: "PUT",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
         body: JSON.stringify(updateJobData)
@@ -201,7 +260,7 @@ export const updateUserByOrg = createAsyncThunk("api/updateUserByOrg", async ({u
         method: "PUT",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
         body: JSON.stringify(updateUserData)
@@ -221,7 +280,7 @@ export const updateUser = createAsyncThunk("api/updateUser", async ({updateUserD
         method: "PUT",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
         body: JSON.stringify(updateUserData)
@@ -244,7 +303,7 @@ export const createUser = createAsyncThunk("api/createUser", async ({createData}
         method: "POST",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
         },
         body: JSON.stringify(createData)
     }).then((res) => 
@@ -263,7 +322,7 @@ export const createJob = createAsyncThunk("api/createJob", async ({createJobData
         method: "POST",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
         body: JSON.stringify(createJobData)
@@ -284,7 +343,7 @@ export const createUserByOrg = createAsyncThunk("api/createUserByOrg", async ({c
         method: "POST",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
         body: JSON.stringify(createUserData)
@@ -298,6 +357,25 @@ export const createUserByOrg = createAsyncThunk("api/createUserByOrg", async ({c
 
 
 
+//Post request to create new User
+
+export const createNewUser = createAsyncThunk("api/createNewUser", async ({createUserData}) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/user/`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Authorization': `Bearer ${access_token.token}`,
+        },
+        body: JSON.stringify(createUserData)
+    });
+    const data = await response.json();
+    return {
+        status: response.status,
+        data: data,
+    };
+});
+
+
 
 //Post User CV
 
@@ -305,7 +383,7 @@ export const createCV = createAsyncThunk("api/createCV", async (formData) => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/users/cv/`, {
         method: "POST",
         headers: {
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
         body: formData
@@ -326,7 +404,7 @@ export const createJobApply = createAsyncThunk("api/createJobApply", async ({job
         method: "POST",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
             'Authorization': `Bearer ${access_token.token}`,
         },
         body: JSON.stringify(jobData)
@@ -346,7 +424,7 @@ export const loginUser = createAsyncThunk("api/loginUser", async ({logData}) => 
         method: "POST",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
         },
         body: JSON.stringify(logData)
     }).then((res) =>
@@ -363,7 +441,7 @@ export const activateUser = createAsyncThunk("api/activateUser", async ({activat
         method: "POST",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
         },
         body: JSON.stringify(activateData)
     }).then((res) =>
@@ -377,7 +455,7 @@ export const resendActivateUser = createAsyncThunk("api/resendActivateUser", asy
         method: "POST",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
+            
         },
         body: JSON.stringify(resendData)
     }).then((res) =>
@@ -402,11 +480,14 @@ const apiSlice = createSlice({
         resendResponse: null,
         user: [],
         userList: [],
+        topStaff: [],
         cv: [],
         job: [],
         jobSearch: [],
         orgUser: [],
+        allUsers: [],
         jobById: [],
+        applicantsById: [],
         orgUserById: [],
         loading: false,
         error: null,
@@ -437,6 +518,21 @@ const apiSlice = createSlice({
             state.userList = [action.payload];
         },
         [getAllUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+
+        //get top staff 
+        [getTopStaff.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getTopStaff.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.topStaff = [action.payload];
+        },
+        [getTopStaff.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
@@ -496,6 +592,20 @@ const apiSlice = createSlice({
         },
 
 
+        //get applicants by Job ID 
+        [getApplicantsById.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getApplicantsById.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.applicantsById = [action.payload];
+        },
+        [getApplicantsById.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
         //get org list
         [getUserByOrg.pending]: (state, action) => {
             state.loading = true;
@@ -524,6 +634,20 @@ const apiSlice = createSlice({
         },
 
 
+         //get user list
+         [getAllUsersCreated.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getAllUsersCreated.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.allUsers = [action.payload];
+        },
+        [getAllUsersCreated.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
         //delete job post
         [deleteJob.pending]: (state, action) => {
             state.loading = true;
@@ -547,6 +671,20 @@ const apiSlice = createSlice({
             state.orgUser = [action.payload];
         },
         [deleteUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+         //delete user by ID
+         [deleteUserById.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [deleteUserById.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.allUsers = [action.payload];
+        },
+        [deleteUserById.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
@@ -591,6 +729,22 @@ const apiSlice = createSlice({
             state.userResponse = action.payload;
         },
         [createUserByOrg.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
+
+         //post new User (Create User)
+         [createNewUser.pending]: (state, action) => {
+            state.loading = true;
+            state.jobResponse = null;
+        },
+        [createNewUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.userResponse = action.payload;
+        },
+        [createNewUser.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

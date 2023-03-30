@@ -3,10 +3,12 @@ import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
 import DashboardLayout from '../layouts/dashboard';
 import DashboardLayoutUser from '../layouts/dashboarduser';
+import DashboardLayoutOrg from '../layouts/dashboardorg';
 import MainLayout from '../layouts/main'
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // components
 import LoadingScreen from '../components/LoadingScreen';
+
 
 
 
@@ -33,6 +35,8 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { path: '/', element: <Home/>},
+        { path: '/topstaff', element: <TopStaff/>},
+        { path: '/admission', element: <Admission/>},
         { path: '/job/:id', element: <JobDetails/>},
         { path: '/job/:id/apply', element: <JobApply/>},
         { path: '/search', element: <JobSearch/>},
@@ -51,7 +55,7 @@ export default function Router() {
       ],
     },
     
-    userData && userData.userData && (userData.userData.is_organization === true || userData.userData.is_staff === true) ?
+    userData && userData.userData && (userData.userData.is_staff === true) ?
     {
       path: '',
       element: <DashboardLayout />,
@@ -59,14 +63,17 @@ export default function Router() {
         { path: 'dashboard', element: <Dashboard /> },
         { path: 'settings', element: <AccountSettings /> },
         { path: 'job-board', element: <JobBoard /> },
+        { path: 'job-board/applicants/:id', element: <PostApplicants /> },
         { path: 'org-board', element: <OrganizationBoard /> },
         { path: 'job-board/create', element: <JobBoardIndex /> },
         { path: 'org-board/create', element: <OrganizationBoardIndex /> },
         { path: 'job-board/update/:id', element: <JobBoardIndexUpdate /> },
         { path: 'org-board/update/:id', element: <OrganizationBoardIndexUpdate /> },
+        { path: 'user-board', element: <UserBoard /> },
+        { path: 'user-board/create', element: <UserBoardIndex /> },
       ],
     }
-    : userData && userData.userData && (userData.userData.is_organization === false || userData.userData.is_staff === false) ?
+    : userData && userData.userData && (userData.userData.is_organization === false && userData.userData.is_staff === false) ?
     {
       path: '',
       element: <DashboardLayoutUser />,
@@ -74,6 +81,18 @@ export default function Router() {
         { path: 'dashboard', element: <DashboardUser /> },
         { path: 'settings', element: <AccountSettings /> },
         { path: 'cv', element: <CV /> },
+      ],
+    }
+    : userData && userData.userData && (userData.userData.is_organization === true) ?
+    {
+      path: '',
+      element: <DashboardLayoutOrg />,
+      children: [
+        { path: 'dashboard', element: <DashboardOrg /> },
+        { path: 'job-board', element: <PostsBoard /> },
+        { path: 'job-board/create', element: <JobBoardIndex /> },
+        { path: 'job-board/update/:id', element: <JobBoardIndexUpdate /> },
+        { path: 'job-board/applicants/:id', element: <PostApplicants /> },
       ],
     }
     :
@@ -90,6 +109,9 @@ export default function Router() {
         { path: 'org-board/create', element: <LoadingPage /> },
         { path: 'job-board/update/:id', element: <LoadingPage /> },
         { path: 'org-board/update/:id', element: <LoadingPage /> },
+        { path: 'job-board/applicants/:id', element: <LoadingPage /> },
+        { path: 'user-board', element: <LoadingPage /> },
+        { path: 'user-board/create', element: <LoadingPage /> },
       ],
     },
     
@@ -100,6 +122,8 @@ export default function Router() {
 
 // Dashboard
 const Home = Loadable(lazy(() => import('../pages/Home')));
+const TopStaff = Loadable(lazy(() => import('../pages/TopStaff')));
+const Admission = Loadable(lazy(() => import('../pages/Admission')));
 const JobDetails = Loadable(lazy(() => import('../pages/JobDetails')));
 const JobApply = Loadable(lazy(() => import('../pages/jobdetails/JobApply')));
 const JobSearch = Loadable(lazy(() => import('../pages/JobSearch')));
@@ -110,12 +134,17 @@ const Activate = Loadable(lazy(() => import('../pages/auth/Activate')));
 const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
 const JobBoard = Loadable(lazy(() => import('../pages/JobBoard')));
 const OrganizationBoard = Loadable(lazy(() => import('../pages/OrganizationBoard')));
+const UserBoard = Loadable(lazy(() => import('../pages/UserBoard')));
 const JobBoardIndex = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndex')));
-const OrganizationBoardIndex = Loadable(lazy(() => import('../pages/user/forms/OrganizationBoardIndex')));
+const OrganizationBoardIndex = Loadable(lazy(() => import('../pages/organization/forms/OrganizationBoardIndex')));
+const UserBoardIndex = Loadable(lazy(() => import('../pages/users/forms/UserBoardIndex')));
 const JobBoardIndexUpdate = Loadable(lazy(() => import('../pages/job/forms/JobBoardIndexUpdate')));
-const OrganizationBoardIndexUpdate = Loadable(lazy(() => import('../pages/user/forms/OrganizationBoardIndexUpdate')));
+const OrganizationBoardIndexUpdate = Loadable(lazy(() => import('../pages/organization/forms/OrganizationBoardIndexUpdate')));
 const AccountSettings = Loadable(lazy(() => import('../pages/AccountSettings')));
 const CV = Loadable(lazy(() => import('../pages/dashboarduser/CV')));
 const DashboardUser = Loadable(lazy(() => import('../pages/dashboarduser/DashboardUser')));
+const DashboardOrg = Loadable(lazy(() => import('../pages/dashboardorganization/DashboardOrg')));
+const PostsBoard = Loadable(lazy(() => import('../pages/dashboardorganization/PostsBoard')));
+const PostApplicants = Loadable(lazy(() => import('../pages/dashboardorganization/PostApplicants')));
 const LoadingPage = Loadable(lazy(() => import('../pages/LoadingPage')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

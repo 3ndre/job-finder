@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteJob, getJob } from '../../redux/features/apiSlice';
-import Scrollbar from '../../components/Scrollbar';
-import SkeletonItem from '../../components/SkeletonItem';
-import EmptyContent from '../../components/EmptyContent';
-import TableMoreMenu from '../../components/TableMoreMenu';
-import Iconify from '../../components/Iconify';
+import { deleteJob, getJob } from '../../../redux/features/apiSlice';
+import Scrollbar from '../../../components/Scrollbar';
+import SkeletonItem from '../../../components/SkeletonItem';
+import EmptyContent from '../../../components/EmptyContent';
+import TableMoreMenu from '../../../components/TableMoreMenu';
+import Iconify from '../../../components/Iconify';
 
 
 
 //MUI
 import {
-  Card,
   Button,
+  Card,
   MenuItem,
   Typography,
   Table,
@@ -28,7 +28,11 @@ import dayjs from 'dayjs';
 
 
 
-const JobList = () => {
+const PostsList = () => {
+
+
+  const userData = JSON.parse(localStorage.getItem('user_data'));
+  const authorId = userData.userData.id;
 
 
   const dispatch = useDispatch();
@@ -78,17 +82,30 @@ const handleDelete = (id) => {
 
   }
 
+
   const handleNavigateApplicants = (id) => {
     navigate(`/job-board/applicants/${id}`)
 
 }
 
 
-  
 
   useEffect(() => {
     fetchJob()
 }, []);
+
+
+
+  function findJobById(id) {
+  
+    if (job && job[0] && job[0].results) {
+      const matchingPost = job[0].results.filter((job) => job.author.id === id);
+      return matchingPost.length > 0 ? matchingPost : [];
+    }
+    return [];
+  }
+
+  const matchingPosts = findJobById(authorId);
 
 
 
@@ -100,11 +117,11 @@ const handleDelete = (id) => {
     {loading ? (<SkeletonItem/>) : (
 
       <>    
-      {job.length < 1 ? 
+      {matchingPosts.length < 1 ? 
                       
         <EmptyContent
         title="Empty!"
-        description={`You don't have any job listings yet.`}
+        description={`You don't have any listed jobs yet.`}
         sx={{
           '& span.MuiBox-root': { height: 160 },
         }}
@@ -126,6 +143,10 @@ const handleDelete = (id) => {
                         </TableCell>
 
                         <TableCell align="left">
+                            Description
+                        </TableCell>
+
+                        <TableCell align="left">
                             Position
                         </TableCell>
 
@@ -136,10 +157,6 @@ const handleDelete = (id) => {
                         <TableCell align="left">
                             Applicants
                         </TableCell>
-
-                        <TableCell align="left">
-                            Top staff
-                        </TableCell>
                        
                         <TableCell></TableCell>
                     </TableRow>
@@ -148,7 +165,7 @@ const handleDelete = (id) => {
 
                 <TableBody>
 
-                        {job && job.length > 0 && job[0] && job[0].results.map((item) => (
+                        {matchingPosts && matchingPosts.length > 0 && matchingPosts.map((item) => (
 
                         <TableRow hover key={item.id}>
 
@@ -158,21 +175,23 @@ const handleDelete = (id) => {
                                 </Typography>
                               </TableCell>
 
+                    
+                              <TableCell align="left">
+                                <Typography variant="subtitle2" noWrap>
+                                    {item.description.length > 12 ? <>{item.description.substr(0, 12)}...</> : item.description}
+                                </Typography>
+                              </TableCell>
+
                               <TableCell align="left">
                                 <Typography variant="subtitle2" noWrap>
                                     {item.position.length > 12 ? <>{item.position.substr(0, 12)}...</> : item.position}
                                 </Typography>
                               </TableCell>
 
-
                               <TableCell align="left">
                                 <Typography variant="subtitle2" noWrap>
                                     {dayjs(item.created_date).format('MMM D, YYYY')}
                                 </Typography>
-                              </TableCell>
-
-                              <TableCell align="left">
-                               <Button variant='outlined' onClick={() => handleNavigateApplicants(item.id)}>View</Button>
                               </TableCell>
 
                               <TableCell align="left">
@@ -213,4 +232,4 @@ const handleDelete = (id) => {
   )
 }
 
-export default JobList
+export default PostsList

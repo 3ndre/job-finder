@@ -3,20 +3,18 @@ import { Navigate } from 'react-router-dom';
 // @mui
 import { Container, Grid, Typography, Button, Box } from '@mui/material';
 // hooks
-import useSettings from '../hooks/useSettings';
+import useSettings from '../../hooks/useSettings';
 // components
-import Page from '../components/Page';
-import Iconify from '../components/Iconify';
-import StatsCard from '../components/dashboard-section/StatsCard';
+import Page from '../../components/Page';
 //redux
 import { useSelector, useDispatch } from 'react-redux';
-import { getUserByOrg, getJob, getAllUser } from '../redux/features/apiSlice';
+import { getUserByOrg, getJob, getAllUser } from '../../redux/features/apiSlice';
 // ----------------------------------------------------------------------
 
 
 const userData = JSON.parse(localStorage.getItem('user_data'));
 
-export default function Dashboard() {
+export default function DashboardOrg() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
 
@@ -45,7 +43,7 @@ export default function Dashboard() {
       fetchUser();
   }, []);
 
-
+  
   if (localStorage.getItem('access_token') === null) {
     return <Navigate to="/login" />;
   }
@@ -63,23 +61,9 @@ export default function Dashboard() {
            {copied ? <>Copied!</> : <>Refer ID: {userData && userData.userData.refer_id === null ? <>-----</> : userData.userData.refer_id}</> }
           </Button>
          
-         
         </Box>
 
         <Grid container spacing={3}>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <StatsCard title="Total Organizations" total={loading ? <>...</> : orgUser && orgUser[0] ? orgUser[0].count : <>...</> } icon={'icons8:organization'} color="info"/>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <StatsCard title="Total Users" total={loading ? <>...</> : userList && userList[0] ? userList[0].count : <>...</> } icon={'mdi:users'} color="warning"/>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <StatsCard title="Total Jobs" total={loading ? <>...</> : job && job[0] ? job[0].count : <>...</> } icon={'material-symbols:work'} color="secondary"/>
-        </Grid>
-
 
         </Grid>
       </Container>

@@ -124,7 +124,7 @@ export default function OrganizationBoardForm() {
               setUserData({ name: '', email: '', password: ''});
               setTimeout(() => {
                 setOpen(false)
-                navigate('/user-board')
+                navigate('/org-board')
               }, 2000)
   
 
